@@ -20,6 +20,9 @@
   --ease-spring: cubic-bezier(.22, 1, .36, 1);
   --ease-out: cubic-bezier(.16, 1, .3, 1);
   --ease-fluid: cubic-bezier(.19, 1, .22, 1);
+  --ease-hover: cubic-bezier(.22, .61, .36, 1);
+  --motion-hover: .72s;
+  --motion-color: .55s;
 }
 [data-theme=dark] {
   --ink: #f8f4ea;
@@ -83,7 +86,7 @@ a { color: inherit; text-decoration: none }
   font-family: var(--sans);
   font-size: 21px;
   font-weight: 800;
-  transition: background .28s ease, transform .42s var(--ease-spring), box-shadow .32s ease;
+  transition: background var(--motion-color) ease, transform var(--motion-hover) var(--ease-hover), box-shadow var(--motion-hover) var(--ease-hover);
 }
 .brand:hover .brand-mark {
   transform: rotate(-6deg) scale(1.08);
@@ -113,7 +116,7 @@ a { color: inherit; text-decoration: none }
   padding: 11px 13px;
   position: relative;
   overflow: hidden;
-  transition: background .2s ease, color .2s ease, transform .22s var(--ease-spring), box-shadow .22s ease;
+  transition: background var(--motion-color) ease, color var(--motion-color) ease, transform var(--motion-hover) var(--ease-hover), box-shadow var(--motion-hover) var(--ease-hover);
   animation: nav-item-in .52s var(--ease-spring) both;
   animation-delay: calc(var(--motion-order, 0) * 38ms);
 }
@@ -123,7 +126,7 @@ a { color: inherit; text-decoration: none }
   inset: 0;
   background: linear-gradient(90deg, color-mix(in srgb, var(--green) 16%, transparent), transparent);
   opacity: 0;
-  transition: opacity .22s ease;
+  transition: opacity var(--motion-color) ease;
 }
 .nav a:hover, .nav a.active {
   background: var(--soft);
@@ -153,7 +156,7 @@ a { color: inherit; text-decoration: none }
   text-align: left;
   font-size: 12px;
   font-weight: 700;
-  transition: color .22s ease, transform .28s var(--ease-spring);
+  transition: color var(--motion-color) ease, transform var(--motion-hover) var(--ease-hover);
 }
 .theme-button:hover { color: var(--green); transform: translateX(4px) }
 .sign-out-link { color: var(--green); font-size: 12px; font-weight: 700 }
@@ -212,7 +215,7 @@ h3 { font-size: 26px }
   padding: 10px 18px;
   position: relative;
   overflow: hidden;
-  transition: background .2s ease, border-color .2s ease, transform .22s var(--ease-spring), box-shadow .22s ease;
+  transition: background var(--motion-color) ease, border-color var(--motion-color) ease, color var(--motion-color) ease, transform var(--motion-hover) var(--ease-hover), box-shadow var(--motion-hover) var(--ease-hover);
 }
 .button:hover { transform: translateY(-2px) }
 .button:active { transform: translateY(0) scale(.97) }
@@ -226,7 +229,7 @@ h3 { font-size: 26px }
   inset: 0;
   background: linear-gradient(105deg, transparent 25%, rgba(255,255,255,.36) 50%, transparent 75%);
   transform: translateX(-135%);
-  transition: transform .6s ease;
+  transition: transform .92s var(--ease-fluid);
 }
 .button.primary:hover { background: var(--green-dark); box-shadow: 0 8px 24px color-mix(in srgb, var(--green) 42%, transparent) }
 .button.primary:hover::after { transform: translateX(135%) }
@@ -255,7 +258,7 @@ h3 { font-size: 26px }
   letter-spacing: -.04em;
   line-height: 1.2;
   margin: 4px 0;
-  transition: color .28s ease, transform .32s var(--ease-spring);
+  transition: color var(--motion-color) ease, transform var(--motion-hover) var(--ease-hover);
 }
 .metric:hover strong { color: var(--green); transform: translateY(-2px) }
 
@@ -274,7 +277,7 @@ td, th { border-bottom: 1px solid var(--line); font-size: 14px; padding: 14px 9p
 th { color: var(--muted); font-size: 11px; letter-spacing: .1em; text-transform: uppercase }
 tr:last-child td { border: 0 }
 tbody tr {
-  transition: background .22s ease, transform .22s ease;
+  transition: background var(--motion-color) ease, transform var(--motion-hover) var(--ease-hover);
   will-change: background;
 }
 tbody tr:hover { background: var(--soft) }
@@ -306,7 +309,7 @@ footer { border-top: 1px solid var(--line); margin-top: 50px; padding-top: 15px 
   background: var(--paper);
   border-radius: 12px;
   padding: 13px;
-  transition: border-color .3s ease, box-shadow .32s ease, transform .32s var(--ease-spring), background .22s ease;
+  transition: border-color var(--motion-color) ease, box-shadow var(--motion-hover) var(--ease-hover), transform var(--motion-hover) var(--ease-hover), background var(--motion-color) ease;
 }
 .message-card.assistant { border-left: 3px solid var(--green) }
 .message-card:hover {
@@ -329,7 +332,7 @@ input, select, textarea {
   color: var(--ink);
   padding: 10px;
   width: 100%;
-  transition: border-color .22s ease, box-shadow .22s ease, transform .22s var(--ease-spring), background .22s ease;
+  transition: border-color var(--motion-color) ease, box-shadow var(--motion-hover) var(--ease-hover), transform var(--motion-hover) var(--ease-hover), background var(--motion-color) ease;
 }
 input:focus, select:focus, textarea:focus {
   border-color: var(--green);
@@ -369,7 +372,7 @@ input:hover:not(:focus), select:hover:not(:focus), textarea:hover:not(:focus) {
 .agreement-grid, .property-grid { display: grid; gap: 13px; grid-template-columns: repeat(3,1fr) }
 .agreement-card {
   padding: 17px;
-  transition: border-color .3s ease, box-shadow .35s ease, transform .35s var(--ease-spring);
+  transition: border-color var(--motion-color) ease, box-shadow var(--motion-hover) var(--ease-hover), transform var(--motion-hover) var(--ease-hover);
 }
 .agreement-card:hover {
   border-color: color-mix(in srgb, var(--green) 42%, var(--line));
@@ -397,7 +400,7 @@ input:hover:not(:focus), select:hover:not(:focus), textarea:hover:not(:focus) {
   gap: 13px;
   padding: 17px;
   animation: card-in .42s var(--ease-spring) both;
-  transition: border-color .3s ease, box-shadow .35s ease, transform .35s var(--ease-spring);
+  transition: border-color var(--motion-color) ease, box-shadow var(--motion-hover) var(--ease-hover), transform var(--motion-hover) var(--ease-hover);
 }
 .property-card:hover {
   border-color: color-mix(in srgb, var(--green) 42%, var(--line));
@@ -423,7 +426,7 @@ input:hover:not(:focus), select:hover:not(:focus), textarea:hover:not(:focus) {
   font-size: 25px;
   height: 42px;
   width: 42px;
-  transition: background .22s ease, transform .32s var(--ease-spring);
+  transition: background var(--motion-color) ease, transform var(--motion-hover) var(--ease-hover);
 }
 .property-card:hover .property-icon {
   background: color-mix(in srgb, var(--green) 12%, var(--soft));
@@ -436,7 +439,7 @@ input:hover:not(:focus), select:hover:not(:focus), textarea:hover:not(:focus) {
   color: var(--muted);
   font-size: 11px;
   padding: 4px 8px;
-  transition: background .22s ease, color .22s ease;
+  transition: background var(--motion-color) ease, color var(--motion-color) ease;
 }
 .property-card:hover .property-meta span {
   background: color-mix(in srgb, var(--green) 10%, var(--soft));
@@ -450,7 +453,7 @@ input:hover:not(:focus), select:hover:not(:focus), textarea:hover:not(:focus) {
   font-size: 12px;
   font-weight: 700;
   padding: 0;
-  transition: color .2s ease, letter-spacing .22s ease;
+  transition: color var(--motion-color) ease, letter-spacing var(--motion-hover) var(--ease-hover);
 }
 .text-button:hover { text-decoration: underline; letter-spacing: .01em }
 .text-button.danger { color: var(--rust) }
@@ -494,7 +497,7 @@ dialog h2 { margin-bottom: 10px }
   position: absolute;
   right: 0;
   top: 0;
-  transition: background .18s ease, color .18s ease, transform .28s var(--ease-spring);
+  transition: background var(--motion-color) ease, color var(--motion-color) ease, transform var(--motion-hover) var(--ease-hover);
   width: 30px;
 }
 .dialog-close:hover { background: var(--line); color: var(--ink); transform: rotate(90deg) scale(1.1) }
@@ -521,7 +524,7 @@ dialog h2 { margin-bottom: 10px }
 .feature-card {
   display: block;
   padding: 19px;
-  transition: border-color .3s ease, box-shadow .35s ease, transform .35s var(--ease-spring);
+  transition: border-color var(--motion-color) ease, box-shadow var(--motion-hover) var(--ease-hover), transform var(--motion-hover) var(--ease-hover);
 }
 .feature-card:hover {
   border-color: color-mix(in srgb, var(--green) 48%, var(--line));
@@ -536,7 +539,7 @@ dialog h2 { margin-bottom: 10px }
   letter-spacing: .14em;
   margin-bottom: 8px;
   text-transform: uppercase;
-  transition: letter-spacing .28s ease;
+  transition: letter-spacing var(--motion-hover) var(--ease-hover);
 }
 .feature-card:hover span { letter-spacing: .18em }
 .feature-card p { color: var(--muted); font-size: 13px; margin: 8px 0 0 }
@@ -549,7 +552,7 @@ dialog h2 { margin-bottom: 10px }
 }
 .tenant-card, .reminder-card, .repair-card {
   padding: 17px;
-  transition: border-color .3s ease, box-shadow .35s ease, transform .35s var(--ease-spring);
+  transition: border-color var(--motion-color) ease, box-shadow var(--motion-hover) var(--ease-hover), transform var(--motion-hover) var(--ease-hover);
 }
 .tenant-card:hover, .reminder-card:hover, .repair-card:hover {
   border-color: color-mix(in srgb, var(--green) 42%, var(--line));
@@ -577,7 +580,7 @@ dialog h2 { margin-bottom: 10px }
 /* ─── PORTAL ──────────────────────────────────────────────── */
 .portal-links { border-top: 1px solid var(--line); display: grid; gap: 6px; margin-top: 16px; padding-top: 15px }
 .portal-links small { color: var(--green); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase }
-.portal-links a { color: var(--muted); font-size: 12px; transition: color .2s ease, transform .2s ease; display: inline-block }
+.portal-links a { color: var(--muted); font-size: 12px; transition: color var(--motion-color) ease, transform var(--motion-hover) var(--ease-hover); display: inline-block }
 .portal-links a:hover { color: var(--green); transform: translateX(3px) }
 .portal-body { min-height: 100vh; animation: page-in .42s var(--ease-spring) both }
 .portal-shell { margin: auto; max-width: 760px; padding: 32px 18px }
@@ -589,7 +592,7 @@ dialog h2 { margin-bottom: 10px }
   border-radius: 13px;
   max-width: 82%;
   padding: 12px 14px;
-  transition: box-shadow .28s ease, transform .28s var(--ease-spring);
+  transition: box-shadow var(--motion-hover) var(--ease-hover), transform var(--motion-hover) var(--ease-hover);
   animation: message-in .38s var(--ease-spring) both;
   animation-delay: calc(var(--motion-order, 0) * 60ms);
 }
@@ -608,7 +611,7 @@ dialog h2 { margin-bottom: 10px }
   font-size: 12px;
   font-weight: 700;
   padding: 7px 12px;
-  transition: background .22s ease, color .22s ease, transform .22s var(--ease-spring);
+  transition: background var(--motion-color) ease, color var(--motion-color) ease, transform var(--motion-hover) var(--ease-hover);
 }
 .portal-nav a:hover { background: color-mix(in srgb, var(--green) 16%, var(--soft)); transform: translateY(-2px) }
 .portal-overview { display: grid; gap: 10px; grid-template-columns: repeat(3,1fr) }
@@ -678,7 +681,7 @@ dialog h2 { margin-bottom: 10px }
 }
 .public-header .brand { margin: 0 }
 .public-header .brand-mark {
-  transition: background .28s ease;
+  transition: background var(--motion-color) ease, transform var(--motion-hover) var(--ease-hover), box-shadow var(--motion-hover) var(--ease-hover);
   transform: scale(var(--header-mark-scale));
   transform-origin: left center;
 }
@@ -687,6 +690,12 @@ dialog h2 { margin-bottom: 10px }
 .public-header > .button {
   transform: translate3d(0, var(--header-lift), 0);
   will-change: transform;
+}
+.public-header .brand:hover .brand-mark {
+  transform: scale(var(--header-mark-scale)) rotate(-6deg) scale(1.08);
+}
+.public-header > .button:hover {
+  transform: translate3d(0, calc(var(--header-lift) - 3px), 0);
 }
 .public-footer { border-top: 1px solid #1b2b42; margin-top: 60px }
 .public-footer p { font-size: 12px; max-width: 560px; color: #aab3c0; text-align: right }
@@ -712,7 +721,7 @@ dialog h2 { margin-bottom: 10px }
   font-weight: 800;
   letter-spacing: .02em;
   position: relative;
-  transition: color .35s ease, transform .55s var(--ease-fluid);
+  transition: color var(--motion-color) ease, transform var(--motion-hover) var(--ease-hover);
 }
 .public-nav a:hover { transform: translateY(-3px) }
 .public-nav a::after {
@@ -724,7 +733,7 @@ dialog h2 { margin-bottom: 10px }
   height: 1px;
   background: var(--green);
   transform: scaleX(0);
-  transition: transform .28s var(--ease-spring);
+  transition: transform var(--motion-hover) var(--ease-hover);
   transform-origin: right center;
 }
 .public-nav a:hover::after, .public-nav a.active::after {
@@ -830,8 +839,8 @@ dialog h2 { margin-bottom: 10px }
 .public-editorial h2 { font-size: clamp(48px,5vw,76px); max-width: 620px }
 .public-editorial p:not(.eyebrow) { color: #aab3c0; font-size: 16px; line-height: 1.8; max-width: 570px }
 .public-editorial-reverse { grid-template-columns: .92fr 1.08fr }
-.text-button { background: transparent; border: 0; color: var(--green); font-size: 13px; font-weight: 700; padding: 0; transition: color .2s ease, gap .2s ease; display: inline-flex; align-items: center; gap: 6px }
-.text-button::after { content: "→"; display: inline-block; transition: transform .28s var(--ease-spring) }
+.text-button { background: transparent; border: 0; color: var(--green); font-size: 13px; font-weight: 700; padding: 0; transition: color var(--motion-color) ease, gap var(--motion-hover) var(--ease-hover), letter-spacing var(--motion-hover) var(--ease-hover); display: inline-flex; align-items: center; gap: 6px }
+.text-button::after { content: "→"; display: inline-block; transition: transform var(--motion-hover) var(--ease-hover) }
 .text-button:hover::after { transform: translateX(5px) }
 .text-button:hover { text-decoration: none }
 .text-button.danger { color: var(--rust) }
@@ -899,6 +908,10 @@ dialog h2 { margin-bottom: 10px }
 .public-section.revealed .public-grid article:nth-child(2) { transition-delay: .38s }
 .public-section.revealed .public-grid article:nth-child(3) { transition-delay: .52s }
 .public-section.revealed .public-grid article:nth-child(4) { transition-delay: .66s }
+[data-reveal].reveal-settled article { transition-delay: 0s !important }
+[data-reveal].reveal-settled.public-section .public-grid article {
+  transition: background var(--motion-color) ease, border-color var(--motion-color) ease, opacity var(--motion-color) ease, transform var(--motion-hover) var(--ease-hover);
+}
 .public-grid article:hover {
   background: #0b192b;
   border-color: rgba(212,166,75,.26);
@@ -908,7 +921,7 @@ dialog h2 { margin-bottom: 10px }
 .public-grid p, .pricing-grid p, .pricing-grid li, .prose-panel p, .public-cta p, .public-footer p { color: #aab3c0 }
 .public-grid article span {
   display: inline-block;
-  transition: transform .38s var(--ease-spring), letter-spacing .3s ease;
+  transition: transform var(--motion-hover) var(--ease-hover), letter-spacing var(--motion-hover) var(--ease-hover);
 }
 .public-grid article:hover span { transform: translateX(6px); letter-spacing: .16em }
 .public-grid { gap: 0 }
@@ -1004,7 +1017,14 @@ dialog h2 { margin-bottom: 10px }
   transform: none;
 }
 .pricing-grid[data-reveal].revealed article:nth-child(2) { transition-delay: .2s }
+.pricing-grid[data-reveal].reveal-settled article {
+  transition: border-color var(--motion-color) ease, opacity var(--motion-color) ease, transform var(--motion-hover) var(--ease-hover);
+}
 .pricing-grid article { border-radius: 18px }
+.pricing-grid article:hover {
+  border-color: rgba(212,166,75,.62);
+  transform: translateY(-6px);
+}
 .pricing-grid article.featured { border-color: #d4a64b }
 .pricing-grid h2 { font-size: 54px }
 .pricing-grid h2 span { color: #aab3c0; font-family: var(--sans); font-size: 14px }

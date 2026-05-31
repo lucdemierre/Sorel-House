@@ -231,13 +231,18 @@
   // ─── INTERSECTION REVEAL ──────────────────────────────────
   const revealItems = document.querySelectorAll("[data-reveal]");
   if (revealItems.length) {
+    const revealItem = (item) => {
+      if (item.classList.contains("revealed")) return;
+      item.classList.add("revealed");
+      setTimeout(() => item.classList.add("reveal-settled"), 1900);
+    };
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      revealItems.forEach((item) => item.classList.add("revealed"));
+      revealItems.forEach(revealItem);
     } else if ("IntersectionObserver" in window) {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-          entry.target.classList.add("revealed");
+          revealItem(entry.target);
           observer.unobserve(entry.target);
         });
       }, { threshold: 0.16, rootMargin: "0px 0px -12% 0px" });
@@ -245,20 +250,13 @@
       // Immediately reveal items already in view
       setTimeout(() => {
         revealItems.forEach((item) => {
-          if (item.getBoundingClientRect().top < innerHeight * 0.86) item.classList.add("revealed");
+          if (item.getBoundingClientRect().top < innerHeight * 0.86) revealItem(item);
         });
       }, 160);
     } else {
-      revealItems.forEach((item) => item.classList.add("revealed"));
+      revealItems.forEach(revealItem);
     }
   }
-
-  // ─── NAV LINK HOVER RIPPLE (app sidebar) ──────────────────
-  document.querySelectorAll(".nav a").forEach((link) => {
-    link.addEventListener("mouseenter", () => {
-      link.style.transition = "background .2s ease, color .2s ease, transform .22s cubic-bezier(.22,1,.36,1), box-shadow .22s ease";
-    });
-  });
 
   // ─── BADGE PULSE for expired items ────────────────────────
   document.querySelectorAll(".badge.expired").forEach((badge) => {
