@@ -1,6 +1,7 @@
 (() => {
   // ─── THEME ───────────────────────────────────────────────
   const root = document.documentElement;
+  const reduceMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches && root.dataset.motion !== "full";
   const savedTheme = localStorage.getItem("sorel-theme");
   root.dataset.theme = savedTheme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
 
@@ -71,7 +72,7 @@
   // ─── DIALOG CLOSE ────────────────────────────────────────
   const closeDialog = (dialog) => {
     if (!dialog?.open || dialog.classList.contains("is-closing")) return;
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (reduceMotion()) {
       dialog.close();
       return;
     }
@@ -117,7 +118,7 @@
     const isInt = /^\d+$/.test(raw);
     const isPound = /^£[\d,]+\.\d{2}$/.test(raw);
     if (!isInt && !isPound) return;
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (reduceMotion()) return;
 
     const numericStr = raw.replace(/[£,]/g, "");
     const target = parseFloat(numericStr);
@@ -146,7 +147,7 @@
   if (publicHeader) {
     const progressBar = publicHeader.querySelector(".scroll-progress");
     const editorialImages = document.querySelectorAll(".public-editorial img");
-    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reducedMotion = reduceMotion();
     let currentScroll = scrollY;
     let targetScroll = scrollY;
     let animationFrame;
@@ -193,7 +194,7 @@
 
   const publicBody = document.querySelector(".public-body");
   if (publicBody) {
-    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reducedMotion = reduceMotion();
     requestAnimationFrame(() => publicBody.classList.add("motion-ready"));
 
     if (!reducedMotion) {
@@ -236,7 +237,7 @@
       item.classList.add("revealed");
       setTimeout(() => item.classList.add("reveal-settled"), 1900);
     };
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (reduceMotion()) {
       revealItems.forEach(revealItem);
     } else if ("IntersectionObserver" in window) {
       const observer = new IntersectionObserver((entries) => {
@@ -260,7 +261,7 @@
 
   // ─── BADGE PULSE for expired items ────────────────────────
   document.querySelectorAll(".badge.expired").forEach((badge) => {
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (reduceMotion()) return;
     badge.style.animation = "badge-pulse 2.4s ease-in-out infinite";
   });
 
