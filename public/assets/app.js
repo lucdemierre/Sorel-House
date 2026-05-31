@@ -69,12 +69,28 @@
   }
 
   // ─── DIALOG CLOSE ────────────────────────────────────────
+  const closeDialog = (dialog) => {
+    if (!dialog?.open || dialog.classList.contains("is-closing")) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      dialog.close();
+      return;
+    }
+    dialog.classList.add("is-closing");
+    setTimeout(() => {
+      dialog.close();
+      dialog.classList.remove("is-closing");
+    }, 220);
+  };
   document.querySelectorAll("[data-close]").forEach((button) => {
-    button.addEventListener("click", () => button.closest("dialog")?.close());
+    button.addEventListener("click", () => closeDialog(button.closest("dialog")));
   });
   document.querySelectorAll("dialog").forEach((dialog) => {
     dialog.addEventListener("click", (event) => {
-      if (event.target === dialog) dialog.close();
+      if (event.target === dialog) closeDialog(dialog);
+    });
+    dialog.addEventListener("cancel", (event) => {
+      event.preventDefault();
+      closeDialog(dialog);
     });
   });
 
@@ -129,6 +145,7 @@
   const publicHeader = document.querySelector(".public-header");
   if (publicHeader) {
     const progressBar = publicHeader.querySelector(".scroll-progress");
+    const editorialImages = document.querySelectorAll(".public-editorial img");
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
     let currentScroll = scrollY;
     let targetScroll = scrollY;
@@ -139,9 +156,16 @@
       if (Math.abs(targetScroll - currentScroll) < 0.08) currentScroll = targetScroll;
 
       const progress = Math.min(currentScroll / Math.max(innerHeight, 1), 1);
-      document.documentElement.style.setProperty("--hero-copy-shift", `${progress * 28}px`);
-      document.documentElement.style.setProperty("--hero-copy-opacity", `${1 - progress * 0.42}`);
-      document.documentElement.style.setProperty("--hero-image-shift", `${progress * 24}px`);
+      const visualProgress = reducedMotion ? 0 : progress;
+      document.documentElement.style.setProperty("--hero-copy-shift", `${visualProgress * 28}px`);
+      document.documentElement.style.setProperty("--hero-copy-opacity", `${1 - visualProgress * 0.42}`);
+      document.documentElement.style.setProperty("--hero-image-shift", `${visualProgress * 24}px`);
+
+      editorialImages.forEach((image) => {
+        const rect = image.getBoundingClientRect();
+        const viewportProgress = (rect.top + rect.height / 2 - innerHeight / 2) / Math.max(innerHeight, 1);
+        image.style.setProperty("--editorial-image-shift", `${reducedMotion ? 0 : viewportProgress * -18}px`);
+      });
 
       if (progressBar) {
         const pageProgress = currentScroll / Math.max(document.documentElement.scrollHeight - innerHeight, 1);
@@ -162,6 +186,43 @@
     addEventListener("scroll", updateScroll, { passive: true });
     addEventListener("resize", updateScroll, { passive: true });
     updateScroll();
+  }
+
+  const publicBody = document.querySelector(".public-body");
+  if (publicBody) {
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    requestAnimationFrame(() => publicBody.classList.add("motion-ready"));
+
+    if (!reducedMotion) {
+      let pointerFrame;
+      let pointerX = 0;
+      const renderPointer = () => {
+        document.documentElement.style.setProperty("--hero-image-x", `${pointerX * -8}px`);
+        document.documentElement.style.setProperty("--hero-copy-x", `${pointerX * 5}px`);
+        pointerFrame = null;
+      };
+      addEventListener("pointermove", (event) => {
+        pointerX = (event.clientX / Math.max(innerWidth, 1) - .5) * 2;
+        if (!pointerFrame) pointerFrame = requestAnimationFrame(renderPointer);
+      }, { passive: true });
+      document.querySelector(".public-hero-image")?.addEventListener("pointerleave", () => {
+        pointerX = 0;
+        if (!pointerFrame) pointerFrame = requestAnimationFrame(renderPointer);
+      });
+    }
+
+    if (!reducedMotion) {
+      document.querySelectorAll("a[href]").forEach((link) => {
+        link.addEventListener("click", (event) => {
+          const url = new URL(link.href, location.href);
+          const samePage = url.pathname === location.pathname && url.search === location.search;
+          if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.target || url.origin !== location.origin || samePage) return;
+          event.preventDefault();
+          publicBody.classList.add("is-leaving");
+          setTimeout(() => { location.href = url.href }, 360);
+        });
+      });
+    }
   }
 
   // ─── INTERSECTION REVEAL ──────────────────────────────────
@@ -209,16 +270,4 @@
   });
 
   // ─── SMOOTH DIALOG BACKDROP ───────────────────────────────
-  document.querySelectorAll("dialog").forEach((dialog) => {
-    dialog.addEventListener("close", () => {
-      // brief fade-out on close
-      dialog.style.opacity = "0";
-      dialog.style.transform = "translateY(8px) scale(.98)";
-      setTimeout(() => {
-        dialog.style.opacity = "";
-        dialog.style.transform = "";
-      }, 220);
-    });
-  });
-
 })();

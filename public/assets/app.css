@@ -19,6 +19,7 @@
   --sans: "Manrope", Arial, sans-serif;
   --ease-spring: cubic-bezier(.22, 1, .36, 1);
   --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-fluid: cubic-bezier(.19, 1, .22, 1);
 }
 [data-theme=dark] {
   --ink: #f8f4ea;
@@ -465,12 +466,17 @@ dialog {
   transition: display .22s allow-discrete, overlay .22s allow-discrete, opacity .22s ease, transform .22s var(--ease-spring);
   width: calc(100% - 30px);
 }
-dialog[open] { animation: dialog-in .26s var(--ease-spring) both }
+dialog[open] { animation: dialog-in .42s var(--ease-fluid) both }
+dialog.is-closing {
+  opacity: 0;
+  transform: translateY(12px) scale(.975);
+}
 dialog::backdrop {
   background: rgba(3,14,29,.66);
   animation: backdrop-in .22s ease both;
   backdrop-filter: blur(4px);
 }
+dialog.is-closing::backdrop { opacity: 0 }
 dialog form { position: relative }
 dialog h2 { margin-bottom: 10px }
 .dialog-close {
@@ -618,6 +624,20 @@ dialog h2 { margin-bottom: 10px }
 /* ─── PUBLIC SHARED ───────────────────────────────────────── */
 .public-body { background: #030914; color: #f8f4ea; min-height: 100vh; overflow-x: hidden }
 .public-main { margin: auto; max-width: 1380px; overflow: clip; padding: 0 clamp(18px,5vw,72px) }
+.public-main, .public-header, .public-footer {
+  transition: opacity .52s var(--ease-fluid), transform .72s var(--ease-fluid), filter .52s ease;
+}
+.public-body.motion-ready .public-main,
+.public-body.motion-ready .public-footer {
+  animation: public-page-enter .86s var(--ease-fluid) both;
+}
+.public-body.is-leaving .public-main,
+.public-body.is-leaving .public-footer {
+  filter: blur(5px);
+  opacity: 0;
+  transform: translateY(-14px);
+}
+.public-body.is-leaving .public-header { opacity: 0; transform: translateY(-100%) }
 
 /* ─── PUBLIC HEADER ───────────────────────────────────────── */
 .public-header, .public-footer {
@@ -637,7 +657,7 @@ dialog h2 { margin-bottom: 10px }
   position: sticky;
   right: 0;
   top: 0;
-  transition: background .52s var(--ease-spring), border-color .52s var(--ease-spring), padding .52s var(--ease-spring), backdrop-filter .52s var(--ease-spring);
+  transition: background .52s var(--ease-spring), border-color .52s var(--ease-spring), padding .52s var(--ease-spring), backdrop-filter .52s var(--ease-spring), opacity .52s var(--ease-fluid), transform .72s var(--ease-fluid);
   z-index: 20;
 }
 .public-header.scrolled {
@@ -717,8 +737,8 @@ dialog h2 { margin-bottom: 10px }
   background-image: url("images/sorel-house-hero.png");
   background-position: center;
   background-size: cover;
-  transform: translate3d(0, var(--hero-image-shift, 0), 0) scale(1.03);
-  transition: transform .18s linear;
+  transform: translate3d(var(--hero-image-x, 0), var(--hero-image-shift, 0), 0) scale(1.045);
+  transition: transform .36s var(--ease-out);
   will-change: transform;
   z-index: -2;
 }
@@ -760,8 +780,8 @@ dialog h2 { margin-bottom: 10px }
 .public-hero-copy {
   max-width: 850px;
   opacity: var(--hero-copy-opacity, 1);
-  transform: translate3d(0, var(--hero-copy-shift, 0), 0);
-  transition: opacity .12s linear, transform .12s linear;
+  transform: translate3d(var(--hero-copy-x, 0), var(--hero-copy-shift, 0), 0);
+  transition: opacity .28s ease, transform .36s var(--ease-out);
   will-change: opacity, transform;
 }
 
@@ -781,14 +801,14 @@ dialog h2 { margin-bottom: 10px }
   display: block;
   filter: saturate(.82) brightness(.9);
   object-fit: cover;
-  transform: scale(1.045);
+  transform: translate3d(0, var(--editorial-image-shift, 0), 0) scale(1.065);
   transition: clip-path 1.35s var(--ease-spring), transform 1.45s var(--ease-spring), filter 1.2s ease;
   width: 100%;
 }
 .public-editorial.revealed img {
   clip-path: inset(0);
   filter: saturate(1) brightness(1);
-  transform: scale(1);
+  transform: translate3d(0, var(--editorial-image-shift, 0), 0) scale(1.035);
 }
 .public-editorial h2 { font-size: clamp(48px,5vw,76px); max-width: 620px }
 .public-editorial p:not(.eyebrow) { color: #aab3c0; font-size: 16px; line-height: 1.8; max-width: 570px }
@@ -809,11 +829,14 @@ dialog h2 { margin-bottom: 10px }
 
 /* ─── DATA REVEAL ─────────────────────────────────────────── */
 [data-reveal] {
+  --reveal-shift: 38px;
+  filter: blur(7px);
   opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 1.05s var(--ease-spring), transform 1.05s var(--ease-spring);
+  transform: translateY(var(--reveal-shift));
+  transition: filter 1.05s ease, opacity 1.05s var(--ease-fluid), transform 1.15s var(--ease-fluid);
 }
 [data-reveal].revealed {
+  filter: none;
   opacity: 1;
   transform: none;
 }
@@ -1032,6 +1055,10 @@ html.theme-changing * { transition-duration: .34s !important }
   from { opacity: 0; transform: translateY(8px) }
   to   { opacity: 1; transform: none }
 }
+@keyframes public-page-enter {
+  from { filter: blur(6px); opacity: 0; transform: translateY(18px) }
+  to   { filter: none; opacity: 1; transform: none }
+}
 @keyframes sidebar-in {
   from { opacity: 0; transform: translateX(-22px) }
   to   { opacity: 1; transform: none }
@@ -1073,8 +1100,8 @@ html.theme-changing * { transition-duration: .34s !important }
   to   { opacity: 1; transform: translate3d(0, 0, 0) }
 }
 @keyframes hero-image-in {
-  from { opacity: .5; transform: scale(1.07) }
-  to   { opacity: 1; transform: scale(1) }
+  from { opacity: .45 }
+  to   { opacity: 1 }
 }
 @keyframes section-hero-in {
   from { opacity: 0; transform: translateY(36px) }
