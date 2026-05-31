@@ -2,3 +2,7 @@
 /storage/*.sqlite-*
 /storage/sessions/
 /config.php
+/storage/*.db
+/storage/*.db-*
+/node_modules/
+/.env

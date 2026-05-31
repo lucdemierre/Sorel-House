@@ -1,0 +1,17 @@
+{
+  "name": "sorel-house",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "preview": "node preview.js",
+    "start": "node server.js",
+    "check": "node --check server.js && node --check preview.js && node --check api/index.js && node --check src/app.js && node --check src/db.js && node --check src/views.js && node --check src/marketing.js && node --check public/assets/app.js"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.15.15",
+    "cookie-session": "^2.1.1",
+    "express": "^5.1.0"
+  }
+}

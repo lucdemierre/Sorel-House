@@ -65,26 +65,36 @@
 
   const publicHeader = document.querySelector(".public-header");
   if (publicHeader) {
-    const updateHeader = () => publicHeader.classList.toggle("scrolled", scrollY > 18);
     const progressBar = publicHeader.querySelector(".scroll-progress");
-    let scrollFrame;
-    const updateHero = () => {
-      scrollFrame = null;
-      const progress = Math.min(scrollY / Math.max(innerHeight, 1), 1);
-      document.documentElement.style.setProperty("--hero-copy-shift", `${progress * 22}px`);
-      document.documentElement.style.setProperty("--hero-copy-opacity", `${1 - progress * 0.38}`);
-      document.documentElement.style.setProperty("--hero-image-shift", `${progress * 18}px`);
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let currentScroll = scrollY;
+    let targetScroll = scrollY;
+    let animationFrame;
+    const renderScroll = () => {
+      currentScroll += (targetScroll - currentScroll) * 0.105;
+      if (Math.abs(targetScroll - currentScroll) < 0.08) currentScroll = targetScroll;
+      const progress = Math.min(currentScroll / Math.max(innerHeight, 1), 1);
+      document.documentElement.style.setProperty("--hero-copy-shift", `${progress * 28}px`);
+      document.documentElement.style.setProperty("--hero-copy-opacity", `${1 - progress * 0.42}`);
+      document.documentElement.style.setProperty("--hero-image-shift", `${progress * 24}px`);
       if (progressBar) {
-        const pageProgress = scrollY / Math.max(document.documentElement.scrollHeight - innerHeight, 1);
+        const pageProgress = currentScroll / Math.max(document.documentElement.scrollHeight - innerHeight, 1);
         progressBar.style.transform = `scaleX(${Math.min(Math.max(pageProgress, 0), 1)})`;
       }
+      if (currentScroll !== targetScroll) animationFrame = requestAnimationFrame(renderScroll);
+      else animationFrame = null;
+    };
+    const updateScroll = () => {
+      targetScroll = scrollY;
+      publicHeader.classList.toggle("scrolled", targetScroll > 18);
+      if (reducedMotion) currentScroll = targetScroll;
+      if (!animationFrame) animationFrame = requestAnimationFrame(renderScroll);
     };
     addEventListener("scroll", () => {
-      updateHeader();
-      if (!scrollFrame) scrollFrame = requestAnimationFrame(updateHero);
+      updateScroll();
     }, { passive: true });
-    updateHeader();
-    updateHero();
+    addEventListener("resize", updateScroll, { passive: true });
+    updateScroll();
   }
 
   const revealItems = document.querySelectorAll("[data-reveal]");

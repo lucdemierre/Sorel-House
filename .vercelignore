@@ -1,0 +1,6 @@
+# Keep legacy private configuration and local-only data out of deployments.
+config.php
+storage/
+node_modules/
+*.php
+lib/
