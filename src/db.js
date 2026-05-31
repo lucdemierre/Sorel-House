@@ -3,9 +3,17 @@ import { randomBytes } from "node:crypto";
 
 let client;
 let ready;
+const isProduction = process.env.NODE_ENV === "production" || Boolean(process.env.VERCEL);
+const databaseConfig = () => {
+  const url = process.env.DATABASE_URL || (isProduction ? "" : "file:storage/sorel-house.db");
+  const authToken = process.env.DATABASE_AUTH_TOKEN || undefined;
+  if (!url) throw new Error("DATABASE_URL is required in production. Configure a hosted LibSQL database in Vercel.");
+  if (isProduction && url.startsWith("file:")) throw new Error("DATABASE_URL must use a hosted LibSQL database in production. file: databases are not supported on Vercel.");
+  if (isProduction && url.startsWith("libsql://") && !authToken) throw new Error("DATABASE_AUTH_TOKEN is required for a hosted LibSQL database in production.");
+  return { url, authToken };
+};
 const db = () => client ||= createClient({
-  url: process.env.DATABASE_URL || "file:storage/sorel-house.db",
-  authToken: process.env.DATABASE_AUTH_TOKEN || undefined,
+  ...databaseConfig(),
 });
 
 const sql = (statement, args = []) => ({ sql: statement, args });

@@ -4,8 +4,10 @@
   root.dataset.theme = savedTheme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
 
   document.querySelector("[data-theme-toggle]")?.addEventListener("click", () => {
+    root.classList.add("theme-changing");
     root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
     localStorage.setItem("sorel-theme", root.dataset.theme);
+    setTimeout(() => root.classList.remove("theme-changing"), 340);
   });
 
   document.querySelectorAll("[data-open]").forEach((button) => {
@@ -61,6 +63,17 @@
     dialog.addEventListener("click", (event) => {
       if (event.target === dialog) dialog.close();
     });
+  });
+
+  document.querySelectorAll(".app-shell .nav a").forEach((item, index) => {
+    item.style.setProperty("--motion-order", index);
+  });
+  document.querySelectorAll(".metrics .metric, .feature-grid .feature-card, .property-grid .property-card, .tenant-grid .tenant-card, .reminder-grid .reminder-card, .portal-repairs .repair-card, .agreement-grid .agreement-card, .conversation-list .message-card, .table-wrap").forEach((item, index) => {
+    item.classList.add("workspace-motion");
+    item.style.setProperty("--motion-order", index % 10);
+  });
+  document.querySelectorAll(".table-wrap tbody tr").forEach((item, index) => {
+    item.style.setProperty("--motion-order", index % 12);
   });
 
   const publicHeader = document.querySelector(".public-header");

@@ -8,6 +8,7 @@ import { homeBody, featuresBody, pricingBody, aboutBody } from "./marketing.js";
 try { process.loadEnvFile?.(".env"); } catch {}
 
 const app = express();
+app.set("trust proxy", 1);
 const config = {
   landlordEmail: (process.env.LANDLORD_EMAIL || "landlord@example.com").toLowerCase(),
   landlordPassword: process.env.LANDLORD_PASSWORD || "change-me",
@@ -36,10 +37,6 @@ app.use((req, res, next) => {
   res.set({ "X-Content-Type-Options": "nosniff", "X-Frame-Options": "SAMEORIGIN", "Referrer-Policy": "strict-origin-when-cross-origin" });
   next();
 });
-app.use(async (req, res, next) => {
-  try { await initDb(); next(); } catch (error) { next(error); }
-});
-
 const equal = (left, right) => {
   const a = Buffer.from(String(left)); const b = Buffer.from(String(right));
   return a.length === b.length && timingSafeEqual(a, b);
@@ -109,6 +106,9 @@ app.get("/about", (req,res) => res.send(publicPage("about", aboutBody, signedIn(
 app.get("/login", (req,res) => signedIn(req) ? res.redirect("/dashboard") : res.send(loginPage(csrf(req))));
 app.post("/login", (req,res) => { try { verifyCsrf(req); if (!equal(String(req.body.email||"").toLowerCase(), config.landlordEmail) || !equal(req.body.password||"", config.landlordPassword)) throw new Error("Email or password is incorrect."); req.session.landlordSignedIn=true; res.redirect("/dashboard"); } catch(error) { res.status(401).send(loginPage(csrf(req),error.message)); } });
 app.get("/logout", (req,res) => { req.session=null; res.redirect("/"); });
+app.use(async (req, res, next) => {
+  try { await initDb(); next(); } catch (error) { next(error); }
+});
 
 for (const page of Object.keys(pageMeta)) {
   app.get(`/${page}`, requireLandlord, async (req,res,next) => { try { const data=await landlordData(); const [title,eyebrow,lede,actions]=pageMeta[page]; res.send(landlordPage(page,title,eyebrow,lede,actions,pageBody(page,data,csrf(req)),data,csrf(req),takeFlash(req))); } catch(error){ next(error); } });
