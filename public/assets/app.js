@@ -157,6 +157,8 @@
 
       const progress = Math.min(currentScroll / Math.max(innerHeight, 1), 1);
       const visualProgress = reducedMotion ? 0 : progress;
+      const headerProgress = reducedMotion ? 1 : Math.min(currentScroll / 140, 1);
+      publicHeader.style.setProperty("--header-progress", headerProgress.toFixed(3));
       document.documentElement.style.setProperty("--hero-copy-shift", `${visualProgress * 28}px`);
       document.documentElement.style.setProperty("--hero-copy-opacity", `${1 - visualProgress * 0.42}`);
       document.documentElement.style.setProperty("--hero-image-shift", `${visualProgress * 24}px`);
@@ -178,7 +180,6 @@
 
     const updateScroll = () => {
       targetScroll = scrollY;
-      publicHeader.classList.toggle("scrolled", targetScroll > 18);
       if (reducedMotion) currentScroll = targetScroll;
       if (!animationFrame) animationFrame = requestAnimationFrame(renderScroll);
     };
@@ -237,12 +238,12 @@
           entry.target.classList.add("revealed");
           observer.unobserve(entry.target);
         });
-      }, { threshold: 0.10, rootMargin: "0px 0px -6% 0px" });
+      }, { threshold: 0.16, rootMargin: "0px 0px -12% 0px" });
       revealItems.forEach((item) => observer.observe(item));
       // Immediately reveal items already in view
       setTimeout(() => {
         revealItems.forEach((item) => {
-          if (item.getBoundingClientRect().top < innerHeight * 0.96) item.classList.add("revealed");
+          if (item.getBoundingClientRect().top < innerHeight * 0.86) item.classList.add("revealed");
         });
       }, 160);
     } else {

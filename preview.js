@@ -14,12 +14,13 @@ const pages = {
 const types = { ".css": "text/css", ".js": "text/javascript", ".png": "image/png" };
 
 http.createServer((req, res) => {
-  if (pages[req.url]) {
+  const pathname = new URL(req.url, "http://127.0.0.1").pathname;
+  if (pages[pathname]) {
     res.setHeader("Content-Type", "text/html; charset=utf-8");
-    return res.end(pages[req.url]);
+    return res.end(pages[pathname]);
   }
-  if (req.url.startsWith("/assets/")) {
-    const file = join("public", req.url);
+  if (pathname.startsWith("/assets/")) {
+    const file = join("public", pathname);
     if (existsSync(file)) {
       res.setHeader("Content-Type", types[extname(file)] || "application/octet-stream");
       return createReadStream(file).pipe(res);
