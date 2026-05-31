@@ -651,25 +651,42 @@ dialog h2 { margin-bottom: 10px }
 }
 .public-header {
   --header-progress: 0;
-  backdrop-filter: blur(calc(20px * var(--header-progress)));
-  background: rgba(3,9,20,calc(.34 + (.48 * var(--header-progress))));
-  border-bottom: 1px solid rgba(212,166,75,calc(.18 * var(--header-progress)));
+  --header-lift: 0px;
+  --header-mark-scale: 1;
+  background: rgba(3,9,20,.34);
+  border-bottom: 1px solid transparent;
+  isolation: isolate;
   left: 0;
   max-width: none;
-  padding-bottom: calc(22px - (9px * var(--header-progress)));
-  padding-top: calc(22px - (9px * var(--header-progress)));
   position: sticky;
   right: 0;
   top: 0;
   transition: opacity .52s var(--ease-fluid), transform .72s var(--ease-fluid);
-  will-change: background, backdrop-filter, padding;
   z-index: 20;
+}
+.public-header::before {
+  backdrop-filter: blur(20px);
+  background: rgba(3,9,20,.82);
+  border-bottom: 1px solid rgba(212,166,75,.18);
+  content: "";
+  inset: 0;
+  opacity: var(--header-progress);
+  pointer-events: none;
+  position: absolute;
+  transition: opacity .08s linear;
+  z-index: -1;
 }
 .public-header .brand { margin: 0 }
 .public-header .brand-mark {
-  height: calc(42px - (8px * var(--header-progress)));
   transition: background .28s ease;
-  width: calc(42px - (8px * var(--header-progress)));
+  transform: scale(var(--header-mark-scale));
+  transform-origin: left center;
+}
+.public-header .brand,
+.public-header .public-nav,
+.public-header > .button {
+  transform: translate3d(0, var(--header-lift), 0);
+  will-change: transform;
 }
 .public-footer { border-top: 1px solid #1b2b42; margin-top: 60px }
 .public-footer p { font-size: 12px; max-width: 560px; color: #aab3c0; text-align: right }

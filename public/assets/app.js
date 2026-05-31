@@ -159,6 +159,8 @@
       const visualProgress = reducedMotion ? 0 : progress;
       const headerProgress = reducedMotion ? 1 : Math.min(currentScroll / 140, 1);
       publicHeader.style.setProperty("--header-progress", headerProgress.toFixed(3));
+      publicHeader.style.setProperty("--header-lift", `${(headerProgress * -3).toFixed(2)}px`);
+      publicHeader.style.setProperty("--header-mark-scale", (1 - headerProgress * .14).toFixed(3));
       document.documentElement.style.setProperty("--hero-copy-shift", `${visualProgress * 28}px`);
       document.documentElement.style.setProperty("--hero-copy-opacity", `${1 - visualProgress * 0.42}`);
       document.documentElement.style.setProperty("--hero-image-shift", `${visualProgress * 24}px`);
