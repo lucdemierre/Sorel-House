@@ -1,4 +1,5 @@
 (() => {
+  // ─── THEME ───────────────────────────────────────────────
   const root = document.documentElement;
   const savedTheme = localStorage.getItem("sorel-theme");
   root.dataset.theme = savedTheme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
@@ -7,9 +8,10 @@
     root.classList.add("theme-changing");
     root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
     localStorage.setItem("sorel-theme", root.dataset.theme);
-    setTimeout(() => root.classList.remove("theme-changing"), 340);
+    setTimeout(() => root.classList.remove("theme-changing"), 380);
   });
 
+  // ─── DIALOGS ─────────────────────────────────────────────
   document.querySelectorAll("[data-open]").forEach((button) => {
     button.addEventListener("click", () => document.getElementById(button.dataset.open)?.showModal());
   });
@@ -41,6 +43,8 @@
       if (!confirm(button.dataset.confirm)) event.preventDefault();
     });
   });
+
+  // ─── PROPERTY SEARCH ─────────────────────────────────────
   const propertySearch = document.querySelector("[data-property-search]");
   if (propertySearch) {
     const cards = [...document.querySelectorAll("[data-property-card]")];
@@ -48,14 +52,23 @@
     propertySearch.addEventListener("input", () => {
       const term = propertySearch.value.trim().toLowerCase();
       let visible = 0;
-      cards.forEach((card) => {
+      cards.forEach((card, index) => {
         const matches = card.dataset.search.includes(term);
-        card.hidden = !matches;
-        if (matches) visible += 1;
+        if (matches) {
+          card.hidden = false;
+          card.style.setProperty("--motion-order", index % 6);
+          card.style.animationName = "none";
+          requestAnimationFrame(() => { card.style.animationName = "" });
+        } else {
+          card.hidden = true;
+        }
+        if (matches) visible++;
       });
       if (empty) empty.hidden = visible !== 0;
     });
   }
+
+  // ─── DIALOG CLOSE ────────────────────────────────────────
   document.querySelectorAll("[data-close]").forEach((button) => {
     button.addEventListener("click", () => button.closest("dialog")?.close());
   });
@@ -65,6 +78,7 @@
     });
   });
 
+  // ─── WORKSPACE MOTION ────────────────────────────────────
   document.querySelectorAll(".app-shell .nav a").forEach((item, index) => {
     item.style.setProperty("--motion-order", index);
   });
@@ -75,7 +89,43 @@
   document.querySelectorAll(".table-wrap tbody tr").forEach((item, index) => {
     item.style.setProperty("--motion-order", index % 12);
   });
+  // Portal messages stagger
+  document.querySelectorAll(".portal-thread .portal-message").forEach((item, index) => {
+    item.style.setProperty("--motion-order", index);
+  });
 
+  // ─── METRIC NUMBER COUNT-UP ───────────────────────────────
+  document.querySelectorAll(".metric strong").forEach((el) => {
+    const raw = el.textContent.trim();
+    // Only animate pure integers or simple £ amounts
+    const isInt = /^\d+$/.test(raw);
+    const isPound = /^£[\d,]+\.\d{2}$/.test(raw);
+    if (!isInt && !isPound) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const numericStr = raw.replace(/[£,]/g, "");
+    const target = parseFloat(numericStr);
+    const prefix = isPound ? "£" : "";
+    const decimals = isPound ? 2 : 0;
+
+    el.textContent = prefix + (0).toLocaleString("en-GB", { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+
+    const start = performance.now();
+    const duration = 820;
+    const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+
+    const tick = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const current = target * easeOut(progress);
+      el.textContent = prefix + current.toLocaleString("en-GB", { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+      if (progress < 1) requestAnimationFrame(tick);
+    };
+    // Delay slightly so the card entrance animation completes first
+    const delay = parseInt(el.closest(".metric")?.style.getPropertyValue("--motion-order") || 0) * 52 + 180;
+    setTimeout(() => requestAnimationFrame(tick), delay);
+  });
+
+  // ─── PUBLIC SCROLL / PARALLAX ────────────────────────────
   const publicHeader = document.querySelector(".public-header");
   if (publicHeader) {
     const progressBar = publicHeader.querySelector(".scroll-progress");
@@ -83,33 +133,38 @@
     let currentScroll = scrollY;
     let targetScroll = scrollY;
     let animationFrame;
+
     const renderScroll = () => {
       currentScroll += (targetScroll - currentScroll) * 0.105;
       if (Math.abs(targetScroll - currentScroll) < 0.08) currentScroll = targetScroll;
+
       const progress = Math.min(currentScroll / Math.max(innerHeight, 1), 1);
       document.documentElement.style.setProperty("--hero-copy-shift", `${progress * 28}px`);
       document.documentElement.style.setProperty("--hero-copy-opacity", `${1 - progress * 0.42}`);
       document.documentElement.style.setProperty("--hero-image-shift", `${progress * 24}px`);
+
       if (progressBar) {
         const pageProgress = currentScroll / Math.max(document.documentElement.scrollHeight - innerHeight, 1);
         progressBar.style.transform = `scaleX(${Math.min(Math.max(pageProgress, 0), 1)})`;
       }
+
       if (currentScroll !== targetScroll) animationFrame = requestAnimationFrame(renderScroll);
       else animationFrame = null;
     };
+
     const updateScroll = () => {
       targetScroll = scrollY;
       publicHeader.classList.toggle("scrolled", targetScroll > 18);
       if (reducedMotion) currentScroll = targetScroll;
       if (!animationFrame) animationFrame = requestAnimationFrame(renderScroll);
     };
-    addEventListener("scroll", () => {
-      updateScroll();
-    }, { passive: true });
+
+    addEventListener("scroll", updateScroll, { passive: true });
     addEventListener("resize", updateScroll, { passive: true });
     updateScroll();
   }
 
+  // ─── INTERSECTION REVEAL ──────────────────────────────────
   const revealItems = document.querySelectorAll("[data-reveal]");
   if (revealItems.length) {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -121,16 +176,49 @@
           entry.target.classList.add("revealed");
           observer.unobserve(entry.target);
         });
-      }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+      }, { threshold: 0.10, rootMargin: "0px 0px -6% 0px" });
       revealItems.forEach((item) => observer.observe(item));
+      // Immediately reveal items already in view
       setTimeout(() => {
         revealItems.forEach((item) => {
           if (item.getBoundingClientRect().top < innerHeight * 0.96) item.classList.add("revealed");
         });
-      }, 180);
+      }, 160);
     } else {
       revealItems.forEach((item) => item.classList.add("revealed"));
     }
   }
+
+  // ─── NAV LINK HOVER RIPPLE (app sidebar) ──────────────────
+  document.querySelectorAll(".nav a").forEach((link) => {
+    link.addEventListener("mouseenter", () => {
+      link.style.transition = "background .2s ease, color .2s ease, transform .22s cubic-bezier(.22,1,.36,1), box-shadow .22s ease";
+    });
+  });
+
+  // ─── BADGE PULSE for expired items ────────────────────────
+  document.querySelectorAll(".badge.expired").forEach((badge) => {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    badge.style.animation = "badge-pulse 2.4s ease-in-out infinite";
+  });
+
+  // ─── STAGGER TABLE ROWS on page load ──────────────────────
+  document.querySelectorAll(".panel tbody tr").forEach((tr, i) => {
+    tr.style.setProperty("--motion-order", i % 14);
+    tr.classList.add("workspace-motion");
+  });
+
+  // ─── SMOOTH DIALOG BACKDROP ───────────────────────────────
+  document.querySelectorAll("dialog").forEach((dialog) => {
+    dialog.addEventListener("close", () => {
+      // brief fade-out on close
+      dialog.style.opacity = "0";
+      dialog.style.transform = "translateY(8px) scale(.98)";
+      setTimeout(() => {
+        dialog.style.opacity = "";
+        dialog.style.transform = "";
+      }, 220);
+    });
+  });
 
 })();
