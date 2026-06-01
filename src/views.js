@@ -5,7 +5,7 @@ const options = (items, selected = "") => items.map((item) => `<option value="${
 const csrf = (token) => `<input type="hidden" name="csrf" value="${esc(token)}">`;
 const formAction = (token, action) => `${csrf(token)}<input type="hidden" name="action" value="${action}">`;
 
-const assetVersion = "20260601-motion-9";
+const assetVersion = "20260601-layout-10";
 const head = (title, theme = "light") => `<!doctype html><html lang="en" data-theme="${theme}" data-motion="full"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} | Sorel House</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/assets/app.css?v=${assetVersion}"><script defer src="/assets/app.js?v=${assetVersion}"></script></head>`;
 const brand = (href = "/") => `<a class="brand" href="${href}"><span class="brand-mark">S</span><span><strong>Sorel House</strong><small>Landlord operations</small></span></a>`;
 const flash = (item) => item ? `<div class="flash ${esc(item.type)}">${esc(item.message)}</div>` : "";

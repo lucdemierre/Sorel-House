@@ -625,8 +625,15 @@ dialog h2 { margin-bottom: 10px }
 .property-profile dd { font-size: 12px; margin: 2px 0 0; white-space: pre-wrap }
 
 /* ─── PUBLIC SHARED ───────────────────────────────────────── */
-.public-body { background: #030914; color: #f8f4ea; min-height: 100vh; overflow-x: hidden }
-.public-main { margin: auto; max-width: 1380px; overflow: clip; padding: 0 clamp(18px,5vw,72px) }
+.public-body {
+  --public-gutter: clamp(18px,5vw,72px);
+  --public-hero-inset: clamp(12px,2.8vw,44px);
+  background: #030914;
+  color: #f8f4ea;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+.public-main { margin: auto; max-width: 1380px; overflow: clip; padding: 0 var(--public-gutter) }
 .public-main, .public-header, .public-footer {
   transition: opacity .4s var(--ease-fluid), transform .52s var(--ease-fluid), filter .4s ease;
 }
@@ -650,7 +657,7 @@ dialog h2 { margin-bottom: 10px }
   justify-content: space-between;
   margin: auto;
   max-width: 1380px;
-  padding: 22px clamp(18px,5vw,72px);
+  padding: 22px var(--public-gutter);
 }
 .public-header {
   --header-progress: 0;
@@ -733,12 +740,12 @@ dialog h2 { margin-bottom: 10px }
   display: flex;
   height: calc(100svh - 87px);
   isolation: isolate;
-  margin-left: calc(-1 * clamp(18px,5vw,72px));
-  margin-right: calc(-1 * clamp(18px,5vw,72px));
+  margin-left: calc(-1 * var(--public-gutter));
+  margin-right: calc(-1 * var(--public-gutter));
   min-height: 620px;
   overflow: hidden;
-  padding-left: clamp(18px,5vw,72px);
-  padding-right: clamp(18px,5vw,72px);
+  padding-left: var(--public-gutter);
+  padding-right: var(--public-gutter);
   position: relative;
 }
 .public-hero-image::before, .public-hero-image::after { content: ""; inset: 0; position: absolute }
@@ -788,6 +795,7 @@ dialog h2 { margin-bottom: 10px }
 .public-hero-copy > *:nth-child(3) { animation-delay: .16s }
 .public-hero-copy > *:nth-child(4) { animation-delay: .22s }
 .public-hero-copy {
+  margin-left: var(--public-hero-inset);
   max-width: 850px;
   opacity: var(--hero-copy-opacity, 1);
   transform: translate3d(var(--hero-copy-x, 0), var(--hero-copy-shift, 0), 0);
@@ -946,6 +954,8 @@ dialog h2 { margin-bottom: 10px }
 }
 .public-animated-hero > div {
   animation: section-hero-in .82s var(--ease-spring) backwards;
+  padding-left: var(--public-hero-inset);
+  padding-right: var(--public-hero-inset);
   position: relative;
   z-index: 1;
 }
