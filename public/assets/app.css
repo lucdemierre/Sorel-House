@@ -153,14 +153,19 @@ a { color: inherit; text-decoration: none }
   background: none;
   border: 0;
   color: var(--muted);
+  display: inline-flex;
+  font-size: 10px;
+  font-weight: 800;
+  justify-content: flex-start;
+  letter-spacing: .14em;
+  line-height: 1.4;
   padding: 0;
   text-align: left;
-  font-size: 12px;
-  font-weight: 700;
-  transition: color var(--motion-color) ease, translate var(--motion-hover) var(--ease-hover);
+  text-transform: uppercase;
+  transition: color var(--motion-color) ease;
 }
-.theme-button:hover { color: var(--green); translate: 4px 0 }
-.sign-out-link { color: var(--green); font-size: 12px; font-weight: 700 }
+.theme-button:hover { color: var(--green) }
+.sign-out-link { color: var(--green); font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase }
 
 /* ─── MAIN ────────────────────────────────────────────────── */
 main {
@@ -208,17 +213,23 @@ h3 { font-size: 26px }
 /* ─── BUTTONS ─────────────────────────────────────────────── */
 .top-actions { display: flex; gap: 10px }
 .button {
+  align-items: center;
   border: 1px solid transparent;
   border-radius: 0;
+  display: inline-flex;
   font-size: 10px;
   font-weight: 800;
+  justify-content: center;
   letter-spacing: .16em;
+  line-height: 1.25;
   min-height: 42px;
   padding: 0 20px;
   position: relative;
   overflow: hidden;
+  text-align: center;
   text-transform: uppercase;
   transition: background .42s var(--ease-out), border-color .42s var(--ease-out), color .42s var(--ease-out), box-shadow .42s var(--ease-out), filter .42s var(--ease-out);
+  white-space: nowrap;
 }
 .button:hover, .button:active { transform: none; translate: none }
 .button.primary {
@@ -232,6 +243,7 @@ h3 { font-size: 26px }
   background: linear-gradient(105deg, transparent 25%, rgba(255,255,255,.36) 50%, transparent 75%);
   transform: translateX(-135%);
   transition: transform .68s var(--ease-fluid);
+  pointer-events: none;
 }
 .button.primary:hover { background: var(--green-dark); box-shadow: inset 0 1px 0 rgba(255,255,255,.16), 0 0 18px color-mix(in srgb, var(--green) 24%, transparent), 0 12px 26px rgba(16,41,74,.14); filter: brightness(1.04) }
 .button.primary:hover::after { transform: translateX(135%) }
@@ -446,15 +458,22 @@ input:hover:not(:focus), select:hover:not(:focus), textarea:hover:not(:focus) {
 .property-card:hover .property-meta span {
   background: color-mix(in srgb, var(--green) 10%, var(--soft));
 }
-.card-actions { border-top: 1px solid var(--line); padding-top: 10px }
-.card-actions form { display: inline }
+.card-actions { align-items: center; border-top: 1px solid var(--line); padding-top: 10px }
+.card-actions form { display: inline-flex }
 .text-button {
+  align-items: center;
   background: transparent;
   border: 0;
   color: var(--green);
-  font-size: 12px;
-  font-weight: 700;
+  display: inline-flex;
+  font-size: 10px;
+  font-weight: 800;
+  justify-content: flex-start;
+  letter-spacing: .12em;
+  line-height: 1.4;
   padding: 0;
+  text-align: left;
+  text-transform: uppercase;
   transition: color var(--motion-color) ease;
 }
 .text-button:hover { text-decoration: underline }
@@ -944,12 +963,12 @@ dialog h2 { margin-bottom: 10px }
 .public-editorial h2 { font-size: clamp(48px,5vw,76px); max-width: 620px }
 .public-editorial p:not(.eyebrow) { color: #aab3c0; font-size: 16px; line-height: 1.8; max-width: 570px }
 .public-editorial-reverse { grid-template-columns: .92fr 1.08fr }
-.text-button { background: transparent; border: 0; color: var(--green); font-size: 13px; font-weight: 700; padding: 0; transition: color var(--motion-color) ease, gap var(--motion-hover) var(--ease-hover), letter-spacing var(--motion-hover) var(--ease-hover); display: inline-flex; align-items: center; gap: 6px }
-.text-button::after { content: "→"; display: inline-block; transition: transform var(--motion-hover) var(--ease-hover) }
-.text-button:hover::after { transform: translateX(5px) }
-.text-button:hover { text-decoration: none }
-.text-button.danger { color: var(--rust) }
-.text-button.danger::after { content: none }
+.public-body .text-button { gap: 8px; letter-spacing: .16em; transition: color var(--motion-color) ease, gap var(--motion-hover) var(--ease-hover) }
+.public-body .text-button::after { content: "→"; display: inline-block; font-size: 15px; line-height: 1; transition: transform var(--motion-hover) var(--ease-hover) }
+.public-body .text-button:hover::after { transform: translateX(5px) }
+.public-body .text-button:hover { text-decoration: none }
+.public-body .text-button.danger { color: var(--rust) }
+.public-body .text-button.danger::after { content: none }
 
 /* ─── PUBLIC SECTION ──────────────────────────────────────── */
 .public-section { border-top: 1px solid rgba(212,166,75,.14); padding: 70px 0 }
