@@ -9,6 +9,8 @@ Vercel-ready Node.js MVP for self-managing private landlords in England.
 - Monthly rent tracker
 - Tenant directory with editable tenancy details and resettable portal links
 - Tenant portal with overview, messages, rent status and maintenance reporting
+- Homeowner portal for portfolio administration
+- Service desk portal for customer support, repair triage and reply approvals
 - Landlord inbox with server-side Claude reply drafts
 - Assured periodic tenancy first-draft generator
 - Document register and portfolio reminders
@@ -30,6 +32,12 @@ npm.cmd run dev
 Then open `http://localhost:8080`.
 
 The public website starts at `http://localhost:8080`. Sign in to open `/dashboard`; each sidebar item opens a separate private page.
+
+Portal entry points:
+
+- Homeowner portal: `/login`
+- Service desk: `/admin/login`
+- Tenant portal: private `/portal?token=...` links issued from the homeowner workspace
 
 ## Deployment
 

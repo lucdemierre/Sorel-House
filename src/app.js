@@ -2,7 +2,7 @@ import express from "express";
 import cookieSession from "cookie-session";
 import { randomBytes, timingSafeEqual } from "node:crypto";
 import { initDb, rows, one, run, ensureCurrentPayments, month, today } from "./db.js";
-import { publicPage, loginPage, landlordPage, pageBody, portalPage } from "./views.js";
+import { publicPage, loginPage, adminLoginPage, landlordPage, pageBody, portalPage, supportPage } from "./views.js";
 import { homeBody, featuresBody, pricingBody, aboutBody } from "./marketing.js";
 
 try { process.loadEnvFile?.(".env"); } catch {}
@@ -12,6 +12,8 @@ app.set("trust proxy", 1);
 const config = {
   landlordEmail: (process.env.LANDLORD_EMAIL || "landlord@example.com").toLowerCase(),
   landlordPassword: process.env.LANDLORD_PASSWORD || "change-me",
+  adminEmail: (process.env.ADMIN_EMAIL || "support@example.com").toLowerCase(),
+  adminPassword: process.env.ADMIN_PASSWORD || "change-me-admin",
   openRouterKey: process.env.OPENROUTER_API_KEY || "",
   openRouterModel: process.env.OPENROUTER_MODEL || "nvidia/nemotron-nano-12b-v2-vl:free",
   siteUrl: process.env.OPENROUTER_SITE_URL || "http://localhost:8080",
@@ -47,6 +49,8 @@ const flash = (req, message, type = "success") => { req.session.flash = { messag
 const takeFlash = (req) => { const value = req.session.flash; delete req.session.flash; return value; };
 const signedIn = (req) => req.session.landlordSignedIn === true;
 const requireLandlord = (req, res, next) => signedIn(req) ? next() : res.redirect("/login");
+const adminSignedIn = (req) => req.session.adminSignedIn === true;
+const requireAdmin = (req, res, next) => adminSignedIn(req) ? next() : res.redirect("/admin/login");
 const text = (body, key, label) => { const value = String(body[key] || "").trim(); if (!value) throw new Error(`${label} is required.`); return value; };
 const id = (body, key, label) => { const value = Number.parseInt(body[key], 10); if (!Number.isInteger(value) || value < 1) throw new Error(`${label} is required.`); return value; };
 const money = (body, key, label) => { const value = Number(body[key]); if (!Number.isFinite(value) || value < 0) throw new Error(`${label} must be zero or more.`); return value; };
@@ -106,6 +110,11 @@ app.get("/about", (req,res) => res.send(publicPage("about", aboutBody, signedIn(
 app.get("/login", (req,res) => signedIn(req) ? res.redirect("/dashboard") : res.send(loginPage(csrf(req))));
 app.post("/login", (req,res) => { try { verifyCsrf(req); if (!equal(String(req.body.email||"").toLowerCase(), config.landlordEmail) || !equal(req.body.password||"", config.landlordPassword)) throw new Error("Email or password is incorrect."); req.session.landlordSignedIn=true; res.redirect("/dashboard"); } catch(error) { res.status(401).send(loginPage(csrf(req),error.message)); } });
 app.get("/logout", (req,res) => { req.session=null; res.redirect("/"); });
+app.get("/homeowner", (req,res) => res.redirect(signedIn(req) ? "/dashboard" : "/login"));
+app.get("/homeowner/login", (req,res) => res.redirect("/login"));
+app.get("/admin/login", (req,res) => adminSignedIn(req) ? res.redirect("/admin") : res.send(adminLoginPage(csrf(req))));
+app.post("/admin/login", (req,res) => { try { verifyCsrf(req); if (!equal(String(req.body.email||"").toLowerCase(), config.adminEmail) || !equal(req.body.password||"", config.adminPassword)) throw new Error("Email or password is incorrect."); req.session.adminSignedIn=true; res.redirect("/admin"); } catch(error) { res.status(401).send(adminLoginPage(csrf(req),error.message)); } });
+app.get("/admin/logout", (req,res) => { req.session.adminSignedIn=false; res.redirect("/admin/login"); });
 app.use(async (req, res, next) => {
   try { await initDb(); next(); } catch (error) { next(error); }
 });
@@ -114,6 +123,21 @@ for (const page of Object.keys(pageMeta)) {
   app.get(`/${page}`, requireLandlord, async (req,res,next) => { try { const data=await landlordData(); const [title,eyebrow,lede,actions]=pageMeta[page]; res.send(landlordPage(page,title,eyebrow,lede,actions,pageBody(page,data,csrf(req)),data,csrf(req),takeFlash(req))); } catch(error){ next(error); } });
   app.post(`/${page}`, requireLandlord, async (req,res) => handleAction(req,res,page));
 }
+
+app.get("/admin", requireAdmin, async (req,res,next) => {
+  try { res.send(supportPage(await landlordData(), csrf(req), takeFlash(req))); } catch(error) { next(error); }
+});
+app.post("/admin", requireAdmin, async (req,res) => {
+  try {
+    verifyCsrf(req);
+    if (req.body.action === "maintenance_status") await run("UPDATE maintenance_requests SET status=? WHERE id=?",[statusIn(req.body.status,["reported","scheduled","completed"],"reported"),id(req.body,"maintenance_id","Maintenance")]);
+    else if (req.body.action === "approve_message") await run("UPDATE messages SET status='approved' WHERE id=? AND sender='assistant' AND status='draft'",[id(req.body,"message_id","Message")]);
+    else if (req.body.action === "decline_message") await run("UPDATE messages SET status='declined' WHERE id=? AND sender='assistant' AND status='draft'",[id(req.body,"message_id","Message")]);
+    else throw new Error("Unknown service desk action.");
+    flash(req,"Saved.");
+  } catch(error) { flash(req,error.message,"error"); }
+  res.redirect("/admin");
+});
 
 async function handleAction(req,res,page) {
   try {
@@ -153,6 +177,6 @@ app.post("/portal", async (req,res) => {
   res.redirect(`/portal?token=${encodeURIComponent(token)}`);
 });
 
-for (const legacy of ["index","features","pricing","about","login","logout","dashboard","properties","maintenance","compliance","tenants","rent","inbox","agreements","documents","reminders","portal"]) app.get(`/${legacy}.php`, (req,res) => res.redirect(301, `/${legacy==="index"?"":legacy}${req.url.includes("?")?"?"+req.url.split("?")[1]:""}`));
+for (const legacy of ["index","features","pricing","about","login","logout","dashboard","properties","maintenance","compliance","tenants","rent","inbox","agreements","documents","reminders","portal","homeowner","admin"]) app.get(`/${legacy}.php`, (req,res) => res.redirect(301, `/${legacy==="index"?"":legacy}${req.url.includes("?")?"?"+req.url.split("?")[1]:""}`));
 app.use((error,req,res,next) => { console.error(error); res.status(500).send("Sorel House could not load. Check the database environment variables."); });
 export default app;

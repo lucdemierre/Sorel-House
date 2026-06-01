@@ -99,7 +99,7 @@
   document.querySelectorAll(".app-shell .nav a").forEach((item, index) => {
     item.style.setProperty("--motion-order", index);
   });
-  document.querySelectorAll(".metrics .metric, .feature-grid .feature-card, .property-grid .property-card, .tenant-grid .tenant-card, .reminder-grid .reminder-card, .portal-repairs .repair-card, .agreement-grid .agreement-card, .conversation-list .message-card, .table-wrap").forEach((item, index) => {
+  document.querySelectorAll(".metrics .metric, .feature-grid .feature-card, .property-grid .property-card, .tenant-grid .tenant-card, .reminder-grid .reminder-card, .portal-repairs .repair-card, .agreement-grid .agreement-card, .conversation-list .message-card, .support-card-grid .panel, .table-wrap").forEach((item, index) => {
     item.classList.add("workspace-motion");
     item.style.setProperty("--motion-order", index % 10);
   });

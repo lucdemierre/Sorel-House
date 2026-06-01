@@ -148,6 +148,7 @@ a { color: inherit; text-decoration: none }
   animation: fade-up .5s var(--ease-spring) .4s backwards;
 }
 .sidebar-foot small { color: var(--muted); font-size: 10px; letter-spacing: .07em; text-transform: uppercase }
+.sidebar-portal-label { color: var(--green); font-size: 9px; font-weight: 800; letter-spacing: .18em; margin: -22px 7px 20px; text-transform: uppercase }
 .theme-button {
   background: none;
   border: 0;
@@ -208,17 +209,18 @@ h3 { font-size: 26px }
 .top-actions { display: flex; gap: 10px }
 .button {
   border: 1px solid transparent;
-  border-radius: 999px;
-  font-size: 12px;
+  border-radius: 0;
+  font-size: 10px;
   font-weight: 800;
-  letter-spacing: .02em;
-  padding: 10px 18px;
+  letter-spacing: .16em;
+  min-height: 42px;
+  padding: 0 20px;
   position: relative;
   overflow: hidden;
-  transition: background var(--motion-color) ease, border-color var(--motion-color) ease, color var(--motion-color) ease, translate var(--motion-hover) var(--ease-hover), transform var(--motion-hover) var(--ease-hover), box-shadow var(--motion-hover) var(--ease-hover);
+  text-transform: uppercase;
+  transition: background .42s var(--ease-out), border-color .42s var(--ease-out), color .42s var(--ease-out), box-shadow .42s var(--ease-out), filter .42s var(--ease-out);
 }
-.button:hover { translate: 0 -2px }
-.button:active { translate: 0 0; transform: scale(.97) }
+.button:hover, .button:active { transform: none; translate: none }
 .button.primary {
   background: var(--green);
   color: #071a33;
@@ -231,14 +233,14 @@ h3 { font-size: 26px }
   transform: translateX(-135%);
   transition: transform .68s var(--ease-fluid);
 }
-.button.primary:hover { background: var(--green-dark); box-shadow: 0 8px 24px color-mix(in srgb, var(--green) 42%, transparent) }
+.button.primary:hover { background: var(--green-dark); box-shadow: inset 0 1px 0 rgba(255,255,255,.16), 0 0 18px color-mix(in srgb, var(--green) 24%, transparent), 0 12px 26px rgba(16,41,74,.14); filter: brightness(1.04) }
 .button.primary:hover::after { transform: translateX(135%) }
 .button.secondary {
   background: var(--card);
   border-color: var(--line);
   color: var(--ink);
 }
-.button.secondary:hover { border-color: var(--green); box-shadow: 0 4px 14px rgba(16,41,74,.1) }
+.button.secondary:hover { background: color-mix(in srgb, var(--green) 7%, var(--card)); border-color: var(--green); box-shadow: 0 12px 26px rgba(16,41,74,.1) }
 
 /* ─── METRICS ─────────────────────────────────────────────── */
 .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 13px }
@@ -580,10 +582,16 @@ dialog h2 { margin-bottom: 10px }
 .portal-links small { color: var(--green); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase }
 .portal-links a { color: var(--muted); font-size: 12px; transition: color var(--motion-color) ease; display: inline-block }
 .portal-links a:hover { color: var(--green) }
-.portal-body { min-height: 100vh; animation: page-in .42s var(--ease-spring) backwards }
-.portal-shell { margin: auto; max-width: 760px; padding: 32px 18px }
-.portal-header { align-items: center; display: flex; justify-content: space-between; margin-bottom: 44px }
+.portal-body { background: var(--paper); min-height: 100vh; animation: page-in .42s var(--ease-spring) backwards }
+.portal-shell { margin: auto; max-width: 1180px; padding: 32px 24px 72px }
+.portal-header { align-items: center; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; margin-bottom: 52px; padding-bottom: 18px }
 .portal-header .brand { margin: 0 }
+.portal-header > div { align-items: end; display: grid; gap: 8px; justify-items: end }
+.portal-role { color: var(--green); font-size: 9px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase }
+.portal-hero { max-width: 760px; padding-bottom: 26px }
+.portal-grid { display: grid; gap: 20px; grid-template-columns: 1.08fr .92fr; margin-top: 24px }
+.portal-section-heading { margin: 0 0 12px }
+.portal-section-heading h2 { font-size: 36px }
 .portal-thread { display: grid; gap: 10px; margin-top: 22px; padding: 15px }
 .portal-message {
   background: var(--paper);
@@ -614,6 +622,44 @@ dialog h2 { margin-bottom: 10px }
 .portal-nav a:hover { background: color-mix(in srgb, var(--green) 16%, var(--soft)); translate: 0 -2px }
 .portal-overview { display: grid; gap: 10px; grid-template-columns: repeat(3,1fr) }
 .portal-section-title { font-size: 30px; margin-top: 34px }
+
+/* â”€â”€â”€ SERVICE DESK â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.support-shell { display: grid; grid-template-columns: 270px 1fr; min-height: 100vh }
+.support-sidebar {
+  background: var(--card);
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  height: 100vh;
+  padding: 24px 19px;
+  position: sticky;
+  top: 0;
+}
+.support-sidebar .brand { margin: 0 }
+.support-sidebar h2 { font-size: 34px }
+.support-sidebar p:not(.eyebrow) { color: var(--muted); font-size: 12px; line-height: 1.7 }
+.support-nav { display: grid; gap: 4px }
+.support-nav a {
+  border-left: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  padding: 10px 12px;
+  text-transform: uppercase;
+  transition: background var(--motion-color) ease, border-color var(--motion-color) ease, color var(--motion-color) ease;
+}
+.support-nav a:hover { background: var(--soft); border-color: var(--green); color: var(--green) }
+.support-main { max-width: 1540px }
+.support-section { margin-top: 44px; scroll-margin-top: 28px }
+.support-card-grid { display: grid; gap: 13px; grid-template-columns: repeat(3,minmax(0,1fr)) }
+.support-draft, .support-property { padding: 17px }
+.support-draft { grid-column: span 2 }
+.support-draft > p:not(.eyebrow) { color: var(--muted); font-size: 13px; line-height: 1.8; white-space: pre-wrap }
+.support-property p, .support-property span { color: var(--muted); font-size: 12px }
+.login-switch { align-items: center; border-top: 1px solid rgba(212,166,75,.16); display: flex; font-size: 12px; gap: 9px; margin-top: 18px; padding-top: 14px }
+.login-switch span { color: #aab3c0 }
 
 /* ─── PROPERTY PROFILE ────────────────────────────────────── */
 .property-profile { border-top: 1px solid var(--line); padding-top: 10px }
@@ -1154,6 +1200,8 @@ html.theme-changing * { transition-duration: .34s !important }
   .section { margin-top: 36px }
   .agreement-grid, .property-grid { grid-template-columns: 1fr }
   .feature-grid, .tenant-grid, .reminder-grid, .portal-repairs, .portal-overview, .public-editorial { grid-template-columns: 1fr }
+  .portal-grid, .support-card-grid { grid-template-columns: 1fr }
+  .support-draft { grid-column: auto }
   .portfolio-toolbar { align-items: stretch; display: grid }
   .public-header { align-items: flex-start; flex-wrap: wrap }
   .public-nav { gap: 13px; margin: 0; order: 3; overflow-x: auto; width: 100% }
@@ -1169,6 +1217,9 @@ html.theme-changing * { transition-duration: .34s !important }
   .public-grid article { min-height: 0 }
   .public-editorial-reverse { display: flex; flex-direction: column-reverse }
   .form-grid { grid-template-columns: 1fr }
+  .support-shell { display: block }
+  .support-sidebar { height: auto; position: relative }
+  .support-nav { display: flex; flex-wrap: wrap }
 }
 
 /* ─── KEYFRAMES ───────────────────────────────────────────── */
