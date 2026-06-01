@@ -971,6 +971,49 @@ dialog h2 { margin-bottom: 10px }
 .public-body .text-button.danger::after { content: none }
 
 /* ─── PUBLIC SECTION ──────────────────────────────────────── */
+.public-property-strip {
+  border-top: 1px solid rgba(212,166,75,.14);
+  display: grid;
+  gap: 28px;
+  padding: 76px 0 88px;
+}
+.public-property-strip-copy { max-width: 780px }
+.public-property-strip h2 { font-size: clamp(48px,6vw,86px); max-width: 760px }
+.public-property-strip-copy > p:not(.eyebrow) { color: #aab3c0; font-size: 16px; line-height: 1.8; max-width: 620px }
+.public-property-gallery { display: grid; gap: 10px; grid-template-columns: 1.1fr .9fr 1.1fr }
+.public-property-gallery figure {
+  border: 1px solid rgba(212,166,75,.14);
+  margin: 0;
+  min-height: 250px;
+  overflow: hidden;
+  position: relative;
+}
+.public-property-gallery img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  transition: filter .55s var(--ease-out), transform .7s var(--ease-fluid);
+  width: 100%;
+}
+.public-property-gallery figure::after {
+  background: linear-gradient(180deg, transparent 48%, rgba(3,9,20,.9));
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+.public-property-gallery figure:hover img { filter: brightness(1.06) saturate(1.04); transform: scale(1.045) }
+.public-property-gallery figcaption {
+  bottom: 16px;
+  color: #efc66e;
+  font-size: 9px;
+  font-weight: 800;
+  left: 17px;
+  letter-spacing: .2em;
+  position: absolute;
+  text-transform: uppercase;
+  z-index: 1;
+}
 .public-section { border-top: 1px solid rgba(212,166,75,.14); padding: 70px 0 }
 .public-section > h2, .public-cta h2 {
   font-size: clamp(40px,5vw,70px);
@@ -991,12 +1034,16 @@ dialog h2 { margin-bottom: 10px }
   transform: none;
 }
 .public-editorial > div,
+.public-property-strip-copy,
+.public-property-gallery,
 .public-section > h2,
 .public-section > .eyebrow,
 .public-statement > * {
   transition: opacity .72s var(--ease-fluid), transform .78s var(--ease-fluid);
 }
 [data-reveal]:not(.revealed) .public-editorial > div,
+[data-reveal]:not(.revealed) .public-property-strip-copy,
+[data-reveal]:not(.revealed) .public-property-gallery,
 [data-reveal]:not(.revealed) .public-section > h2,
 [data-reveal]:not(.revealed) .public-section > .eyebrow,
 [data-reveal]:not(.revealed) .public-statement > * {
@@ -1004,6 +1051,7 @@ dialog h2 { margin-bottom: 10px }
   transform: translateY(26px);
 }
 .public-editorial.revealed > div,
+.public-property-strip.revealed .public-property-gallery,
 .public-section.revealed > .eyebrow,
 .public-statement.revealed > .eyebrow { transition-delay: .08s }
 .public-section.revealed > h2,
@@ -1039,6 +1087,23 @@ dialog h2 { margin-bottom: 10px }
   transform-origin: left;
   transition: opacity .38s var(--ease-out), transform .38s var(--ease-out);
 }
+.public-grid article::after {
+  background-image: var(--card-image);
+  background-position: center;
+  background-size: cover;
+  content: "";
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transform: scale(1.06);
+  transition: opacity .48s var(--ease-fluid), transform .62s var(--ease-fluid);
+  z-index: 0;
+}
+.public-grid article:nth-child(3n+1) { --card-image: linear-gradient(180deg, rgba(3,9,20,.3), rgba(3,9,20,.94)), url("images/sorel-townhouse-dusk.png") }
+.public-grid article:nth-child(3n+2) { --card-image: linear-gradient(180deg, rgba(3,9,20,.3), rgba(3,9,20,.94)), url("images/sorel-period-interior.png") }
+.public-grid article:nth-child(3n) { --card-image: linear-gradient(180deg, rgba(3,9,20,.3), rgba(3,9,20,.94)), url("images/sorel-mews-courtyard.png") }
+.public-grid article > * { position: relative; z-index: 1 }
 .public-section.revealed .public-grid article {
   opacity: 1;
   transform: none;
@@ -1057,6 +1122,7 @@ dialog h2 { margin-bottom: 10px }
   box-shadow: 0 22px 52px rgba(0,0,0,.22);
   translate: 0 -3px;
 }
+.public-grid article:hover::after { opacity: .5; transform: scale(1) }
 .public-grid article:hover::before, .pricing-grid article:hover::before { opacity: 1; transform: scaleX(1) }
 .public-grid span { color: #d4a64b; font-size: 12px; font-weight: 700; letter-spacing: .12em }
 .public-grid p, .pricing-grid p, .pricing-grid li, .prose-panel p, .public-cta p, .public-footer p { color: #aab3c0 }
@@ -1225,6 +1291,7 @@ html.theme-changing * { transition-duration: .34s !important }
   .public-header { align-items: flex-start; flex-wrap: wrap }
   .public-nav { gap: 13px; margin: 0; order: 3; overflow-x: auto; width: 100% }
   .public-grid, .pricing-grid { grid-template-columns: 1fr }
+  .public-property-gallery { grid-template-columns: 1fr }
   .public-footer { align-items: flex-start; display: grid }
   .public-footer p { text-align: left }
   .public-hero h1, .public-page-hero h1 { font-size: 74px }

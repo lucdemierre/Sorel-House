@@ -25,6 +25,14 @@ export const homeBody = `
     <img src="/assets/images/sorel-house-interior.png" alt="A refined property management desk at dusk">
     <div><p class="eyebrow">Built for the details</p><h2>A calmer way to stay on top of the work.</h2><p>Keep recurring jobs visible: certificate renewals, rent follow-ups, repair requests, tenant messages and the documents that matter.</p><a class="text-button" href="/features">Explore every feature</a></div>
   </section>
+  <section class="public-property-strip" data-reveal>
+    <div class="public-property-strip-copy"><p class="eyebrow">Homes, carefully held</p><h2>Built around the places people live.</h2><p>A quieter operational layer for the homes, details and responsibilities that deserve proper attention.</p></div>
+    <div class="public-property-gallery">
+      <figure><img src="/assets/images/sorel-townhouse-dusk.png" alt="Elegant London townhouse at dusk"><figcaption>Townhouse portfolio</figcaption></figure>
+      <figure><img src="/assets/images/sorel-period-interior.png" alt="Refined period-home living room"><figcaption>Interior records</figcaption></figure>
+      <figure><img src="/assets/images/sorel-mews-courtyard.png" alt="Private London mews courtyard"><figcaption>Private residences</figcaption></figure>
+    </div>
+  </section>
   <section class="public-section" data-reveal>
     <p class="eyebrow">One private desk</p><h2>Everything important, kept in view.</h2>
     ${cards(featureCards.slice(0, 4))}
