@@ -648,7 +648,7 @@ dialog h2 { margin-bottom: 10px }
   position: fixed;
   z-index: 0;
 }
-.public-main { margin: auto; max-width: 1380px; overflow: clip; padding: 0 var(--public-gutter); position: relative; z-index: 1 }
+.public-main { margin: auto; max-width: 1380px; overflow: visible; padding: 0 var(--public-gutter); position: relative; z-index: 1 }
 .public-main, .public-header, .public-footer {
   transition: opacity .4s var(--ease-fluid), transform .52s var(--ease-fluid), filter .4s ease;
 }
@@ -809,13 +809,14 @@ dialog h2 { margin-bottom: 10px }
   display: flex;
   height: 100svh;
   isolation: isolate;
-  margin-left: calc(-1 * var(--public-gutter));
-  margin-right: calc(-1 * var(--public-gutter));
+  margin-left: calc(50% - 50vw);
+  margin-right: 0;
   min-height: 620px;
   overflow: hidden;
   padding-left: var(--public-gutter);
   padding-right: var(--public-gutter);
   position: relative;
+  width: 100vw;
 }
 .public-hero-image::before, .public-hero-image::after { content: ""; inset: 0; position: absolute }
 .public-hero-image::before {
@@ -823,9 +824,6 @@ dialog h2 { margin-bottom: 10px }
   background-image: url("images/sorel-house-hero.png");
   background-position: center;
   background-size: cover;
-  transform: translate3d(var(--hero-image-x, 0), var(--hero-image-shift, 0), 0) scale(1.045);
-  transition: transform .36s var(--ease-out);
-  will-change: transform;
   z-index: -2;
 }
 .public-hero-image::after {

@@ -166,7 +166,6 @@
       publicHeader.style.setProperty("--header-blur", `${(headerProgress * 18).toFixed(2)}px`);
       document.documentElement.style.setProperty("--hero-copy-shift", `${visualProgress * 28}px`);
       document.documentElement.style.setProperty("--hero-copy-opacity", `${1 - visualProgress * 0.42}`);
-      document.documentElement.style.setProperty("--hero-image-shift", `${visualProgress * 24}px`);
 
       editorialImages.forEach((image) => {
         const rect = image.getBoundingClientRect();
@@ -198,23 +197,6 @@
   if (publicBody) {
     const reducedMotion = reduceMotion();
     requestAnimationFrame(() => publicBody.classList.add("motion-ready"));
-
-    if (!reducedMotion) {
-      let pointerFrame;
-      let pointerX = 0;
-      const renderPointer = () => {
-        document.documentElement.style.setProperty("--hero-image-x", `${pointerX * -8}px`);
-        pointerFrame = null;
-      };
-      addEventListener("pointermove", (event) => {
-        pointerX = (event.clientX / Math.max(innerWidth, 1) - .5) * 2;
-        if (!pointerFrame) pointerFrame = requestAnimationFrame(renderPointer);
-      }, { passive: true });
-      document.querySelector(".public-hero-image")?.addEventListener("pointerleave", () => {
-        pointerX = 0;
-        if (!pointerFrame) pointerFrame = requestAnimationFrame(renderPointer);
-      });
-    }
 
     if (!reducedMotion) {
       document.querySelectorAll("a[href]").forEach((link) => {
