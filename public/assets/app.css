@@ -258,9 +258,9 @@ h3 { font-size: 26px }
   letter-spacing: -.04em;
   line-height: 1.2;
   margin: 4px 0;
-  transition: color var(--motion-color) ease, translate var(--motion-hover) var(--ease-hover);
+  transition: color var(--motion-color) ease;
 }
-.metric:hover strong { color: var(--green); translate: 0 -2px }
+.metric:hover strong { color: var(--green) }
 
 .positive { color: var(--green) }
 .warning { color: var(--gold) }
@@ -453,9 +453,9 @@ input:hover:not(:focus), select:hover:not(:focus), textarea:hover:not(:focus) {
   font-size: 12px;
   font-weight: 700;
   padding: 0;
-  transition: color var(--motion-color) ease, letter-spacing var(--motion-hover) var(--ease-hover);
+  transition: color var(--motion-color) ease;
 }
-.text-button:hover { text-decoration: underline; letter-spacing: .01em }
+.text-button:hover { text-decoration: underline }
 .text-button.danger { color: var(--rust) }
 
 /* ─── DIALOGS ─────────────────────────────────────────────── */
@@ -539,9 +539,7 @@ dialog h2 { margin-bottom: 10px }
   letter-spacing: .14em;
   margin-bottom: 8px;
   text-transform: uppercase;
-  transition: letter-spacing var(--motion-hover) var(--ease-hover);
 }
-.feature-card:hover span { letter-spacing: .18em }
 .feature-card p { color: var(--muted); font-size: 13px; margin: 8px 0 0 }
 
 /* ─── TENANT / REMINDER / REPAIR CARDS ───────────────────── */
@@ -580,8 +578,8 @@ dialog h2 { margin-bottom: 10px }
 /* ─── PORTAL ──────────────────────────────────────────────── */
 .portal-links { border-top: 1px solid var(--line); display: grid; gap: 6px; margin-top: 16px; padding-top: 15px }
 .portal-links small { color: var(--green); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase }
-.portal-links a { color: var(--muted); font-size: 12px; transition: color var(--motion-color) ease, translate var(--motion-hover) var(--ease-hover); display: inline-block }
-.portal-links a:hover { color: var(--green); translate: 3px 0 }
+.portal-links a { color: var(--muted); font-size: 12px; transition: color var(--motion-color) ease; display: inline-block }
+.portal-links a:hover { color: var(--green) }
 .portal-body { min-height: 100vh; animation: page-in .42s var(--ease-spring) backwards }
 .portal-shell { margin: auto; max-width: 760px; padding: 32px 18px }
 .portal-header { align-items: center; display: flex; justify-content: space-between; margin-bottom: 44px }
@@ -712,9 +710,8 @@ dialog h2 { margin-bottom: 10px }
   font-weight: 800;
   letter-spacing: .02em;
   position: relative;
-  transition: color var(--motion-color) ease, translate var(--motion-hover) var(--ease-hover);
+  transition: color var(--motion-color) ease;
 }
-.public-nav a:hover { translate: 0 -3px }
 .public-nav a::after {
   content: "";
   position: absolute;
@@ -913,9 +910,7 @@ dialog h2 { margin-bottom: 10px }
 .public-grid p, .pricing-grid p, .pricing-grid li, .prose-panel p, .public-cta p, .public-footer p { color: #aab3c0 }
 .public-grid article span {
   display: inline-block;
-  transition: transform var(--motion-hover) var(--ease-hover), letter-spacing var(--motion-hover) var(--ease-hover);
 }
-.public-grid article:hover span { transform: translateX(6px); letter-spacing: .16em }
 .public-grid { gap: 0 }
 .public-grid article { min-height: 220px; padding: 28px }
 .public-grid h3 { font-size: 32px; margin-top: 28px }
