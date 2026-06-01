@@ -128,7 +128,7 @@
     el.textContent = prefix + (0).toLocaleString("en-GB", { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
 
     const start = performance.now();
-    const duration = 820;
+    const duration = 680;
     const easeOut = (t) => 1 - Math.pow(1 - t, 3);
 
     const tick = (now) => {
@@ -153,15 +153,17 @@
     let animationFrame;
 
     const renderScroll = () => {
-      currentScroll += (targetScroll - currentScroll) * 0.105;
+      currentScroll += (targetScroll - currentScroll) * 0.16;
       if (Math.abs(targetScroll - currentScroll) < 0.08) currentScroll = targetScroll;
 
       const progress = Math.min(currentScroll / Math.max(innerHeight, 1), 1);
       const visualProgress = reducedMotion ? 0 : progress;
       const headerProgress = reducedMotion ? 1 : Math.min(currentScroll / 140, 1);
       publicHeader.style.setProperty("--header-progress", headerProgress.toFixed(3));
-      publicHeader.style.setProperty("--header-lift", `${(headerProgress * -3).toFixed(2)}px`);
-      publicHeader.style.setProperty("--header-mark-scale", (1 - headerProgress * .14).toFixed(3));
+      publicHeader.style.setProperty("--header-alpha", (1 - headerProgress * .24).toFixed(3));
+      publicHeader.style.setProperty("--header-border-alpha", (headerProgress * .18).toFixed(3));
+      publicHeader.style.setProperty("--header-shadow-alpha", (headerProgress * .2).toFixed(3));
+      publicHeader.style.setProperty("--header-blur", `${(headerProgress * 18).toFixed(2)}px`);
       document.documentElement.style.setProperty("--hero-copy-shift", `${visualProgress * 28}px`);
       document.documentElement.style.setProperty("--hero-copy-opacity", `${1 - visualProgress * 0.42}`);
       document.documentElement.style.setProperty("--hero-image-shift", `${visualProgress * 24}px`);
@@ -223,7 +225,7 @@
           if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.target || url.origin !== location.origin || samePage) return;
           event.preventDefault();
           publicBody.classList.add("is-leaving");
-          setTimeout(() => { location.href = url.href }, 360);
+          setTimeout(() => { location.href = url.href }, 280);
         });
       });
     }
@@ -235,7 +237,7 @@
     const revealItem = (item) => {
       if (item.classList.contains("revealed")) return;
       item.classList.add("revealed");
-      setTimeout(() => item.classList.add("reveal-settled"), 1900);
+      setTimeout(() => item.classList.add("reveal-settled"), 1100);
     };
     if (reduceMotion()) {
       revealItems.forEach(revealItem);
