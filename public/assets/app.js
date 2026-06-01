@@ -204,7 +204,6 @@
       let pointerX = 0;
       const renderPointer = () => {
         document.documentElement.style.setProperty("--hero-image-x", `${pointerX * -8}px`);
-        document.documentElement.style.setProperty("--hero-copy-x", `${pointerX * 5}px`);
         pointerFrame = null;
       };
       addEventListener("pointermove", (event) => {
