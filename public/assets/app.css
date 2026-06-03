@@ -953,8 +953,10 @@ dialog h2 { margin-bottom: 10px }
   display: flex;
   height: 100svh;
   isolation: isolate;
-  margin-left: calc(50% - 50vw);
-  margin-right: 0;
+  left: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  max-width: none;
   min-height: 620px;
   overflow: hidden;
   padding-left: var(--public-gutter);
@@ -984,10 +986,16 @@ dialog h2 { margin-bottom: 10px }
 .public-page-hero { padding-bottom: 56px }
 .public-hero h1, .public-page-hero h1 {
   font-family: var(--display);
-  font-size: clamp(74px,9.4vw,132px);
   font-weight: 300;
-  letter-spacing: -.065em;
-  line-height: .9;
+  letter-spacing: -.06em;
+  line-height: .92;
+}
+.public-hero h1 {
+  font-size: clamp(72px,7.2vw,116px);
+  max-width: 1040px;
+}
+.public-page-hero h1 {
+  font-size: clamp(72px,8.4vw,124px);
   max-width: 970px;
 }
 .public-hero p:not(.eyebrow), .public-page-hero p:not(.eyebrow) {
@@ -1007,7 +1015,7 @@ dialog h2 { margin-bottom: 10px }
 .public-hero-copy > *:nth-child(4) { animation-delay: .22s }
 .public-hero-copy {
   margin-left: var(--public-hero-inset);
-  max-width: 850px;
+  max-width: 1040px;
   opacity: var(--hero-copy-opacity, 1);
   transform: translate3d(0, var(--hero-copy-shift, 0), 0);
   transition: opacity .28s ease, transform .36s var(--ease-out);
@@ -1368,7 +1376,7 @@ html.theme-changing * { transition-duration: .34s !important }
   .public-property-gallery { grid-template-columns: 1fr }
   .public-footer { align-items: flex-start; display: grid }
   .public-footer p { text-align: left }
-  .public-hero h1, .public-page-hero h1 { font-size: 74px }
+  .public-hero h1, .public-page-hero h1 { font-size: clamp(58px,17vw,74px) }
   .public-header { height: auto; min-height: 128px }
   .public-hero-image { height: 100svh; min-height: 680px }
   .public-hero-image::after { background: linear-gradient(90deg, rgba(3,9,20,.995), rgba(3,9,20,.78)), linear-gradient(rgba(3,9,20,.24), rgba(3,9,20,.24)) }
