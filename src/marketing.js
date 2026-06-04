@@ -13,7 +13,7 @@ const cards = (items = featureCards) => `<div class="public-grid">${items.map(([
 const hero = (eyebrow, title, copy, actions = "") => `<section class="public-page-hero public-animated-hero"><div><p class="eyebrow">${eyebrow}</p><h1>${title}</h1><p>${copy}</p>${actions}</div><p class="public-hero-index" aria-hidden="true">S/H</p></section>`;
 
 export const homeBody = `
-  <section class="public-hero public-hero-image">
+  <section class="public-hero-image">
     <div class="public-hero-copy">
       <p class="eyebrow">For self-managing landlords in England</p>
       <h1>Run your properties with quiet control.</h1>
