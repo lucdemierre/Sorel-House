@@ -953,9 +953,7 @@ dialog h2 { margin-bottom: 10px }
   display: flex;
   height: 100svh;
   isolation: isolate;
-  left: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
+  margin-left: calc(50% - 50vw);
   max-width: none;
   min-height: 620px;
   overflow: hidden;
@@ -967,8 +965,8 @@ dialog h2 { margin-bottom: 10px }
 .public-hero-image::before, .public-hero-image::after { content: ""; inset: 0; position: absolute }
 .public-hero-image::before {
   animation: hero-image-in 1.25s var(--ease-spring) backwards;
-  background-image: url("images/sorel-house-hero.png");
-  background-position: center;
+  background-image: url("https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=1920&q=85");
+  background-position: center 40%;
   background-size: cover;
   z-index: -2;
 }
@@ -1187,9 +1185,9 @@ dialog h2 { margin-bottom: 10px }
   transition: opacity .48s var(--ease-fluid), transform .62s var(--ease-fluid);
   z-index: 0;
 }
-.public-grid article:nth-child(3n+1) { --card-image: linear-gradient(180deg, rgba(3,9,20,.3), rgba(3,9,20,.94)), url("images/sorel-townhouse-dusk.png") }
-.public-grid article:nth-child(3n+2) { --card-image: linear-gradient(180deg, rgba(3,9,20,.3), rgba(3,9,20,.94)), url("images/sorel-period-interior.png") }
-.public-grid article:nth-child(3n) { --card-image: linear-gradient(180deg, rgba(3,9,20,.3), rgba(3,9,20,.94)), url("images/sorel-mews-courtyard.png") }
+.public-grid article:nth-child(3n+1) { --card-image: linear-gradient(180deg, rgba(3,9,20,.3), rgba(3,9,20,.94)), url("https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800&q=85") }
+.public-grid article:nth-child(3n+2) { --card-image: linear-gradient(180deg, rgba(3,9,20,.3), rgba(3,9,20,.94)), url("https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=85") }
+.public-grid article:nth-child(3n) { --card-image: linear-gradient(180deg, rgba(3,9,20,.3), rgba(3,9,20,.94)), url("https://images.unsplash.com/photo-1449844908441-8829872d2607?w=800&q=85") }
 .public-grid article > * { position: relative; z-index: 1 }
 .public-section.revealed .public-grid article {
   opacity: 1;
@@ -1276,7 +1274,7 @@ dialog h2 { margin-bottom: 10px }
 .public-cta {
   background:
     linear-gradient(90deg, rgba(3,9,20,.9), rgba(3,9,20,.7)),
-    url("images/sorel-house-interior.png") center 58% / cover;
+    url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=85") center 58% / cover;
   border: 1px solid rgba(212,166,75,.18);
   margin: 20px 0 80px;
   overflow: hidden;

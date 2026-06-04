@@ -22,15 +22,15 @@ export const homeBody = `
     </div>
   </section>
   <section class="public-editorial" data-reveal>
-    <img src="/assets/images/sorel-house-interior.png" alt="A refined property management desk at dusk">
+    <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&q=85" alt="A calm and considered living room interior">
     <div><p class="eyebrow">Built for the details</p><h2>A calmer way to stay on top of the work.</h2><p>Keep recurring jobs visible: certificate renewals, rent follow-ups, repair requests, tenant messages and the documents that matter.</p><a class="text-button" href="/features">Explore every feature</a></div>
   </section>
   <section class="public-property-strip" data-reveal>
     <div class="public-property-strip-copy"><p class="eyebrow">Homes, carefully held</p><h2>Built around the places people live.</h2><p>A quieter operational layer for the homes, details and responsibilities that deserve proper attention.</p></div>
     <div class="public-property-gallery">
-      <figure><img src="/assets/images/sorel-townhouse-dusk.png" alt="Elegant London townhouse at dusk"><figcaption>Townhouse portfolio</figcaption></figure>
-      <figure><img src="/assets/images/sorel-period-interior.png" alt="Refined period-home living room"><figcaption>Interior records</figcaption></figure>
-      <figure><img src="/assets/images/sorel-mews-courtyard.png" alt="Private London mews courtyard"><figcaption>Private residences</figcaption></figure>
+      <figure><img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=85" alt="Detached house with landscaped garden"><figcaption>Townhouse portfolio</figcaption></figure>
+      <figure><img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=85" alt="Bright contemporary kitchen interior"><figcaption>Interior records</figcaption></figure>
+      <figure><img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=85" alt="Modern home exterior at dusk"><figcaption>Private residences</figcaption></figure>
     </div>
   </section>
   <section class="public-section" data-reveal>
@@ -43,7 +43,7 @@ export const homeBody = `
 export const featuresBody = `
   ${hero("Features", "A clearer way to manage the details.", "One composed workspace for the recurring work that otherwise disappears into inboxes, calendars and spreadsheets.")}
   <section class="public-section" data-reveal><p class="eyebrow">The working desk</p><h2>Useful on an ordinary Tuesday.</h2>${cards()}</section>
-  <section class="public-editorial public-editorial-reverse" data-reveal><div><p class="eyebrow">Human approval stays central</p><h2>AI drafts without handing over control.</h2><p>Tenant replies are prepared for review. You can approve the response, decline it or regenerate it with clearer guidance while keeping the history visible.</p><a class="text-button" href="/login">Open the landlord desk</a></div><img src="/assets/images/sorel-house-interior.png" alt="A calm interior workspace"></section>
+  <section class="public-editorial public-editorial-reverse" data-reveal><div><p class="eyebrow">Human approval stays central</p><h2>AI drafts without handing over control.</h2><p>Tenant replies are prepared for review. You can approve the response, decline it or regenerate it with clearer guidance while keeping the history visible.</p><a class="text-button" href="/login">Open the landlord desk</a></div><img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&q=85" alt="A refined modern living space"></section>
   <section class="public-cta" data-reveal><p class="eyebrow">Start with the essentials</p><h2>Your portfolio, properly organised.</h2><a class="button primary" href="/login">Sign in to Sorel House</a></section>`;
 
 export const pricingBody = `
@@ -56,6 +56,6 @@ export const pricingBody = `
 
 export const aboutBody = `
   ${hero("About Sorel House", "Built for landlords who still manage the details themselves.", "Letting-agent software often assumes a large operation. Sorel House starts with a simpler question: what does an independent landlord need to keep under control every month?")}
-  <section class="public-editorial" data-reveal><img src="/assets/images/sorel-house-interior.png" alt="A quiet, considered property interior"><div><p class="eyebrow">A focused first version</p><h2>The practical work, brought into one place.</h2><p>The platform supports standard private rentals in England. It organises recurring operational work and prepares careful first drafts while leaving legal judgment and final approval with the landlord.</p></div></section>
+  <section class="public-editorial" data-reveal><img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=1200&q=85" alt="A quiet home study and workspace"><div><p class="eyebrow">A focused first version</p><h2>The practical work, brought into one place.</h2><p>The platform supports standard private rentals in England. It organises recurring operational work and prepares careful first drafts while leaving legal judgment and final approval with the landlord.</p></div></section>
   <section class="public-section" data-reveal><p class="eyebrow">Product principles</p><h2>Calm software for real responsibilities.</h2>${cards([["01","Clarity first","Show what needs attention without turning the dashboard into noise."],["02","Approval matters","Make automation useful while keeping the landlord in control."],["03","Operational depth","Store the details needed when a repair, renewal or tenancy question arrives."],["04","Build deliberately","Expand into stronger accounts, delivery and audit records as the service matures."]])}</section>
   <section class="public-cta" data-reveal><p class="eyebrow">Private landlord operations</p><h2>Start with a clearer view.</h2><a class="button primary" href="/features">Explore the platform</a></section>`;
