@@ -965,8 +965,8 @@ dialog h2 { margin-bottom: 10px }
 .public-hero-image::before, .public-hero-image::after { content: ""; inset: 0; position: absolute }
 .public-hero-image::before {
   animation: hero-image-in 1.25s var(--ease-spring) backwards;
-  background-image: url("https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=1920&q=85");
-  background-position: center 35%;
+  background-image: url("https://images.unsplash.com/photo-1710883727434-01c65fc14c76?w=1920&q=90");
+  background-position: center 20%;
   background-size: cover;
   z-index: -2;
 }
